@@ -1,38 +1,78 @@
-#include "utils.h"
+﻿#include "utils.h"
 
 BOOL ParseArguments(int argc, wchar_t* argv[])
 {
 	BOOL bReturnValue = TRUE;
 	BOOL bHelp = FALSE;
 
-	if (argc < 4)
+	if (argc < 3)
 	{
 		PrintUsage();
 		return FALSE;
 	}
 
-	// Read dump file path
-	--argc;
-	g_pwszDumpFilePath = argv[argc];
+	g_pwszExecutionMode = argv[1];
+
+	switch (g_pwszExecutionMode[1])
+	{
+	case 'D':
+	{
+		g_intExecutionMode = DUMP_MODE;
+		if (argc < 4)
+		{
+			std::cout << "[-] Too few arguments for dump mode!\n";
+			PrintUsage();
+			return FALSE;
+		}
+
+		// Read dump file path
+		argc--;
+		g_pwszDumpFilePath = argv[argc];
+		break;
+	}
+	case 'K':
+	{
+		g_intExecutionMode = KILL_MODE;
+		break;
+	}
+	case 'S':
+	{
+		g_intExecutionMode = SUSPEND_MODE;
+		break;
+	}
+	case 'R':
+	{
+		g_intExecutionMode = RESUME_MODE;
+		break;
+	}
+	case 'L':
+	{
+		g_intExecutionMode = LEAK_MODE;
+		break;
+	}
+	default:
+	{
+		wprintf(L"[-] Invalid option: %ws\n", g_pwszExecutionMode);
+		PrintUsage();
+		bReturnValue = FALSE;
+	}
+	}
 
 	// Read target process name or pid
-	--argc;
+	argc--;
 	g_pwszProcessName = argv[argc];
 
-	// Read the execution mode
-	--argc;
-	g_pwszExecutionMode = argv[argc];
-
 	// Try to interpret target process argument as a number (PID rather than name)
-	g_dwProcessId = wcstoul(argv[argc], nullptr, 10);
+	g_dwProcessId = wcstoul(g_pwszProcessName, nullptr, 10);
 
+	// If the process name turns out to be a PID, unset g_pwszProcessName
 	if (g_dwProcessId != 0)
 		g_pwszProcessName = NULL;
 
 	// Parse options
-	while ((argc > 1) && (argv[1][0] == '-'))
+	while ((argc > 2) && (argv[2][0] == '-'))
 	{
-		switch (argv[1][1])
+		switch (argv[2][1])
 		{
 		case 'h':
 			bReturnValue = FALSE;
@@ -56,28 +96,6 @@ BOOL ParseArguments(int argc, wchar_t* argv[])
 		--argc;
 	}
 
-	switch (g_pwszExecutionMode[1])
-	{
-	case 'D':
-		g_intExecutionMode = DUMP_MODE;
-		break;
-	case 'K':
-		g_intExecutionMode = KILL_MODE;
-		break;
-	case 'S':
-		g_intExecutionMode = SUSPEND_MODE;
-		break;
-	case 'R':
-		g_intExecutionMode = RESUME_MODE;
-		break;
-	case 'L':
-		g_intExecutionMode = LEAK_MODE;
-		break;
-	default:
-		wprintf(L"[-] Invalid option: %ws\n", argv[1]);
-		bReturnValue = FALSE;
-	}
-
 	if (bHelp)
 	{
 		PrintUsage();
@@ -95,14 +113,15 @@ VOID PrintArguments()
 VOID PrintUsage()
 {
 	wprintf(
-		L" _____ _____ __      _               \n"
-		"|  _  |  _  |  |   _| |_ _ _____ ___ \n"
-		"|   __|   __|  |__| . | | |     | . |  version %ws\n"
-		"|__|  |__|  |_____|___|___|_|_|_|  _|  by %ws\n"
-		"                                |_|  \n"
+	   L"  _____  _____ _____  _____  _      \n"
+		" |  __ \\|_   _|  __ \\|  __ \\| |     \n"
+		" | |__) | | | | |__) | |__) | |      version %ws\n"
+		" |  _  /  | | |  ___/|  ___/| |      by %ws\n"
+		" | | \\ \\ _| |_| |    | |    | |____  forked by itm4n's PPLDump\n"
+		" |_|  \\_\\_____|_|    |_|    |______|\n"
 		"\n"
 		"Description:\n"
-		"  Dump the memory of a Protected Process Light (PPL) with a *userland* exploit\n"
+		"  Manipulate Protected Process Light (PPL) processes with a *userland* exploit\n"
 		"\n",
 		VERSION,
 		AUTHOR
@@ -110,43 +129,45 @@ VOID PrintUsage()
 
 	wprintf(
 		L"Usage: \n"
-		"  PPLdump.exe [-v] [-d] [-f] (-D|-K|-S|-R|-L) <PROC_NAME|PROC_ID> <DUMP_FILE>\n"
+		"  rippl.exe (-D|-K|-S|-R|-L) [-v] [-d] [-f] (PROC_NAME|PID) [DUMP_FILE]\n"
+		"  () -> mandatory arguments\n"
+		"  [] -> optional arguments\n"
 		"\n"
 	);
 
 	wprintf(
 		L"Operation modes (choose ONLY one):\n"
-		"  -D  Dump the given process\n"
-		"  -K  Kill the given process\n"
-		"  -S  Suspend the given process\n"
-		"  -R  Resume the previously suspended process\n"
-		"  -L  Leak a PROCESS_ALL_ACCESS handle to the given process\n"
+		"  -D -> Dump the given process\n"
+		"  -K -> Kill the given process\n"
+		"  -S -> Suspend the given process\n"
+		"  -R -> Resume the previously suspended process\n"
+		"  -L -> Leak a PROCESS_ALL_ACCESS handle to the given process\n"
 		"\n"
 	);
 
 	wprintf(
 		L"Arguments:\n"
-		"  PROC_NAME  The name of a Process to dump\n"
-		"  PROC_ID    The ID of a Process to dump\n"
-		"  DUMP_FILE  The path of the output dump file - valid ONLY with the -D option\n"
+		"  PROC_NAME -> The name of a Process to dump\n"
+		"  PID       -> The ID of a Process to dump\n"
+		"  DUMP_FILE -> The path of the output dump file - valid ONLY with the -D option\n"
 		"\n"
 	);
 
 	wprintf(
 		L"Options:\n"
-		"  -v         (Verbose) Enable verbose mode\n"
-		"  -d         (Debug) Enable debug mode (implies verbose)\n"
-		"  -f         (Force) Bypass DefineDosDevice error check\n"
+		"  -v -> (Verbose) Enable verbose mode\n"
+		"  -d -> (Debug) Enable debug mode (implies verbose)\n"
+		"  -f -> (Force) Bypass DefineDosDevice error check\n"
 		"\n"
 	);
 
 	wprintf(
 		L"Examples:\n"
-		"  PPLdump.exe -K MsMpEng.exe\n"
-		"  PPLdump.exe -S MsMpEng.exe\n"
-		"  PPLdump.exe -R MsMpEng.exe\n"
-		"  PPLdump.exe -D lsass.exe lsass.dmp\n"
-		"  PPLdump.exe -v -D 720 out.dmp\n"
+		"  rippl.exe -K MsMpEng.exe\n"
+		"  rippl.exe -S MsMpEng.exe\n"
+		"  rippl.exe -R MsMpEng.exe\n"
+		"  rippl.exe -D -f lsass.exe lsass.dmp\n"
+		"  rippl.exe -D -v -f 720 out.dmp\n"
 	);
 }
 

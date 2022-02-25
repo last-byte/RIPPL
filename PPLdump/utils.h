@@ -9,12 +9,13 @@
 #include <sddl.h>
 #include <tlhelp32.h>
 #include <pathcch.h>
+#include <iostream>
 
 #pragma comment(lib, "Rpcrt4.lib")
 #pragma comment(lib, "Pathcch.lib")
 
-#define AUTHOR L"@itm4n"
-#define VERSION L"0.4-1.0"
+#define AUTHOR L"@last0x00"
+#define VERSION L"0.1"
 #define DUMP_MODE 0
 #define KILL_MODE 1
 #define SUSPEND_MODE 2
