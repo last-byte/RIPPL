@@ -28,7 +28,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="RIPPLDLL.def">
+    <None Include="RIPPL.def">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
