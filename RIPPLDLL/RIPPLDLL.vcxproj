@@ -154,7 +154,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dllexploit.cpp" />
-    <ClCompile Include="RIPPDLL.cpp" />
+    <ClCompile Include="RIPPLDLL.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dllexploit.h" />
