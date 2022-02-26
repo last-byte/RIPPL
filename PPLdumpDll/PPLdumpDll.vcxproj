@@ -22,8 +22,9 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{6e8d2c12-255b-403c-9ef3-8a097d374db2}</ProjectGuid>
-    <RootNamespace>PPLdumpDll</RootNamespace>
+    <RootNamespace>RIPPLDLL</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>RIPPLDLL</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -139,6 +140,8 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\PPLdump</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -151,13 +154,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dllexploit.cpp" />
-    <ClCompile Include="PPLdumpDll.cpp" />
+    <ClCompile Include="RIPPDLL.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dllexploit.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="PPLdump.def" />
+    <None Include="RIPPLDLL.def" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

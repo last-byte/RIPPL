@@ -1,6 +1,5 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by PPLdump.rc
 //
 
 #define IDR_RCDATA1                     103

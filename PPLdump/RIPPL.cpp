@@ -1,7 +1,5 @@
 #include "exploit.h"
 
-#include <iostream>
-
 BOOL g_bVerbose = false;
 BOOL g_bDebug = false;
 BOOL g_bForce = false;

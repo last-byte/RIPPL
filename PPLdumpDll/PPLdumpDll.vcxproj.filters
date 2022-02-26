@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="PPLdumpDll.cpp">
+    <ClCompile Include="dllexploit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dllexploit.cpp">
+    <ClCompile Include="RIPPDLL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -28,7 +28,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="PPLdump.def">
+    <None Include="RIPPLDLL.def">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
