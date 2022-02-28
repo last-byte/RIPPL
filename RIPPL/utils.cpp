@@ -7,7 +7,7 @@ BOOL ParseArguments(int argc, wchar_t* argv[])
 
 	if (argc < 3)
 	{
-		PrintUsage();
+		PRINTUSAGE();
 		return FALSE;
 	}
 
@@ -20,8 +20,8 @@ BOOL ParseArguments(int argc, wchar_t* argv[])
 		g_intExecutionMode = DUMP_MODE;
 		if (argc < 4)
 		{
-			std::cout << "[-] Too few arguments for dump mode!\n";
-			PrintUsage();
+			PRINTLASTERROR(L"[-] Too few arguments for dump mode!\n");
+			PRINTUSAGE();
 			return FALSE;
 		}
 
@@ -52,8 +52,8 @@ BOOL ParseArguments(int argc, wchar_t* argv[])
 	}
 	default:
 	{
-		wprintf(L"[-] Invalid option: %ws\n", g_pwszExecutionMode);
-		PrintUsage();
+		WPRINTF(L"[-] Invalid option: %ws\n", g_pwszExecutionMode);
+		PRINTUSAGE();
 		bReturnValue = FALSE;
 	}
 	}
@@ -89,7 +89,7 @@ BOOL ParseArguments(int argc, wchar_t* argv[])
 			g_bForce = TRUE;
 			break;
 		default:
-			wprintf(L"[-] Invalid option: %ws\n", argv[1]);
+			WPRINTF(L"[-] Invalid option: %ws\n", argv[1]);
 			bReturnValue = FALSE;
 		}
 		++argv;
@@ -98,7 +98,7 @@ BOOL ParseArguments(int argc, wchar_t* argv[])
 
 	if (bHelp)
 	{
-		PrintUsage();
+		PRINTUSAGE();
 		return FALSE;
 	}
 
@@ -107,7 +107,7 @@ BOOL ParseArguments(int argc, wchar_t* argv[])
 
 VOID PrintArguments()
 {
-	PrintVerbose(L"Verbose=%d | Debug=%d | Force=%d | Execution Mode='%ws' | Proc='%ws' | PID=%d | File='%ws'", g_bVerbose, g_bDebug, g_bForce, g_pwszExecutionMode, g_pwszProcessName, g_dwProcessId, g_pwszDumpFilePath);
+	PRINTVERBOSE(L"Verbose=%d | Debug=%d | Force=%d | Execution Mode='%ws' | Proc='%ws' | PID=%d | File='%ws'\n", g_bVerbose, g_bDebug, g_bForce, g_pwszExecutionMode, g_pwszProcessName, g_dwProcessId, g_pwszDumpFilePath);
 }
 
 VOID PrintUsage()
@@ -206,7 +206,7 @@ VOID PrintVerbose(LPCWSTR pwszFormat, ...)
 			{
 				StringCbVPrintf(&pwszVerboseString[st_Offset / sizeof(WCHAR)], dwVerboseStringLen - st_Offset, pwszFormat, va);
 
-				wprintf(L"%ws", pwszVerboseString);
+				WPRINTF(L"%ws", pwszVerboseString);
 			}
 
 			LocalFree(pwszVerboseString);
@@ -261,13 +261,13 @@ BOOL ProcessGetProtectionLevel(DWORD dwProcessId, PDWORD pdwProtectionLevel)
 
 	if (!(hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, dwProcessId)))
 	{
-		PrintLastError(L"OpenProcess");
+		PRINTLASTERROR(L"OpenProcess");
 		goto end;
 	}
 
 	if (!GetProcessInformation(hProcess, ProcessProtectionLevelInfo, &level, sizeof(level)))
 	{
-		PrintLastError(L"GetProcessInformation");
+		PRINTLASTERROR(L"GetProcessInformation");
 		goto end;
 	}
 
@@ -298,41 +298,41 @@ BOOL ProcessGetProtectionLevelAsString(DWORD dwProcessId, LPWSTR* ppwszProtectio
 	switch (dwProtectionLevel)
 	{
 	case PROTECTION_LEVEL_WINTCB_LIGHT:
-		pwszProtectionName = L"PsProtectedSignerWinTcb-Light";
+		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerWinTcb-Light");
 		break;
 	case PROTECTION_LEVEL_WINDOWS:
-		pwszProtectionName = L"PsProtectedSignerWindows";
+		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerWindows");
 		break;
 	case PROTECTION_LEVEL_WINDOWS_LIGHT:
-		pwszProtectionName = L"PsProtectedSignerWindows-Light";
+		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerWindows-Light");
 		break;
 	case PROTECTION_LEVEL_ANTIMALWARE_LIGHT:
-		pwszProtectionName = L"PsProtectedSignerAntimalware-Light";
+		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerAntimalware-Light");
 		break;
 	case PROTECTION_LEVEL_LSA_LIGHT:
-		pwszProtectionName = L"PsProtectedSignerLsa-Light";
+		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerLsa-Light");
 		break;
 	case PROTECTION_LEVEL_WINTCB:
-		pwszProtectionName = L"PsProtectedSignerWinTcb";
+		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerWinTcb");
 		break;
 	case PROTECTION_LEVEL_CODEGEN_LIGHT:
-		pwszProtectionName = L"PsProtectedSignerCodegen-Light";
+		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerCodegen-Light");
 		break;
 	case PROTECTION_LEVEL_AUTHENTICODE:
-		pwszProtectionName = L"PsProtectedSignerAuthenticode";
+		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerAuthenticode");
 		break;
 	case PROTECTION_LEVEL_PPL_APP:
-		pwszProtectionName = L"PsProtectedSignerPplApp";
+		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerPplApp");
 		break;
 	case PROTECTION_LEVEL_NONE:
-		pwszProtectionName = L"None";
+		pwszProtectionName = OBFUSCATEDW(L"None");
 		break;
 	default:
-		pwszProtectionName = L"Unknown";
+		pwszProtectionName = OBFUSCATEDW(L"Unknown");
 		bReturnValue = FALSE;
 	}
 
-	StringCchPrintf(*ppwszProtectionLevel, 64, L"%ws", pwszProtectionName);
+	StringCchPrintf(*ppwszProtectionLevel, 64, OBFUSCATEDW(L"%ws"), pwszProtectionName);
 	
 	return bReturnValue;
 }
@@ -391,7 +391,7 @@ BOOL ProcessGetPIDFromName(LPWSTR pwszProcessName, PDWORD pdwProcessId)
 
 	if ((hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0)) == INVALID_HANDLE_VALUE)
 	{
-		PrintLastError(L"CreateToolhelp32Snapshot");
+		PRINTLASTERROR(L"CreateToolhelp32Snapshot");
 		goto end;
 	}
 
@@ -399,7 +399,7 @@ BOOL ProcessGetPIDFromName(LPWSTR pwszProcessName, PDWORD pdwProcessId)
 
 	if (!Process32First(hProcessSnap, &pe32))
 	{
-		PrintLastError(L"Process32First");
+		PRINTLASTERROR(L"Process32First");
 		goto end;
 	}
 
@@ -428,13 +428,13 @@ BOOL ProcessGetPIDFromName(LPWSTR pwszProcessName, PDWORD pdwProcessId)
 
 	if (dwMatchCount == 0)
 	{
-		wprintf(L"[-] Failed to find a process that matches the provided name.\n");
+		WPRINTF(L"[-] Failed to find a process that matches the provided name.\n");
 		goto end;
 	}
 
 	if (dwMatchCount > 1)
 	{
-		wprintf(L"[-] Found more than one process that matches the provided name. Please provide a PID instead.\n");
+		WPRINTF(L"[-] Found more than one process that matches the provided name. Please provide a PID instead.\n");
 		goto end;
 	}
 
@@ -462,7 +462,7 @@ HANDLE ObjectManagerCreateDirectory(LPCWSTR dirname)
 	SetLastError(RtlNtStatusToDosError(status));
 	if (status != 0)
 	{
-		PrintLastError(L"NtCreateDirectoryObjectEx");
+		PRINTLASTERROR(L"NtCreateDirectoryObjectEx");
 		return NULL;
 	}
 
@@ -485,7 +485,7 @@ HANDLE ObjectManagerCreateSymlink(LPCWSTR linkname, LPCWSTR targetname)
 	SetLastError(RtlNtStatusToDosError(status));
 	if (status != 0)
 	{
-		PrintLastError(L"NtCreateSymbolicLinkObject");
+		PRINTLASTERROR(L"NtCreateSymbolicLinkObject");
 		return NULL;
 	}
 
@@ -501,7 +501,7 @@ BOOL TokenGetSid(HANDLE hToken, PSID* ppSid)
 	if (!GetTokenInformation(hToken, TokenUser, NULL, 0, &dwSize))
 	{
 		if (GetLastError() != ERROR_INSUFFICIENT_BUFFER) {
-			PrintLastError(L"GetTokenInformation");
+			PRINTLASTERROR(L"GetTokenInformation");
 			goto end;
 		}
 	}
@@ -512,7 +512,7 @@ BOOL TokenGetSid(HANDLE hToken, PSID* ppSid)
 
 	if (!GetTokenInformation(hToken, TokenUser, pTokenUser, dwSize, &dwSize))
 	{
-		PrintLastError(L"GetTokenInformation");
+		PRINTLASTERROR(L"GetTokenInformation");
 		goto end;
 	}
 
@@ -522,7 +522,7 @@ BOOL TokenGetSid(HANDLE hToken, PSID* ppSid)
 
 	if (!CopySid(SECURITY_MAX_SID_SIZE, *ppSid, pTokenUser->User.Sid))
 	{
-		PrintLastError(L"CopySid");
+		PRINTLASTERROR(L"CopySid");
 		LocalFree(*ppSid);
 		goto end;
 	}
@@ -566,7 +566,7 @@ BOOL TokenCompareSids(PSID pSidA, PSID pSidB)
 		LocalFree(pwszSidB);
 	}
 	else
-		PrintLastError(L"ConvertSidToStringSid");
+		PRINTLASTERROR(L"ConvertSidToStringSid");
 
 	return bReturnValue;
 }
@@ -587,7 +587,7 @@ BOOL TokenGetUsername(HANDLE hToken, LPWSTR* ppwszUsername)
 
 	if (!LookupAccountSid(NULL, pSid, wszUsername, &dwMaxUsername, wszDomain, &dwMaxDomain, &type))
 	{
-		PrintLastError(L"LookupAccountSid");
+		PRINTLASTERROR(L"LookupAccountSid");
 		goto end;
 	}
 
@@ -595,7 +595,7 @@ BOOL TokenGetUsername(HANDLE hToken, LPWSTR* ppwszUsername)
 	if (!*ppwszUsername)
 		goto end;
 
-	StringCchPrintf(*ppwszUsername, dwMaxSize * 2 + 1, L"%ws\\%ws", wszDomain, wszUsername);
+	StringCchPrintf(*ppwszUsername, dwMaxSize * 2 + 1, OBFUSCATEDW(L"%ws\\%ws"), wszDomain, wszUsername);
 	bReturnValue = TRUE;
 
 end:
@@ -618,7 +618,7 @@ BOOL TokenCheckPrivilege(HANDLE hToken, LPCWSTR pwszPrivilege, BOOL bEnablePrivi
 	{
 		if (GetLastError() != ERROR_INSUFFICIENT_BUFFER)
 		{
-			PrintLastError(L"GetTokenInformation");
+			PRINTLASTERROR(L"GetTokenInformation");
 			goto end;
 		}
 	}
@@ -629,7 +629,7 @@ BOOL TokenCheckPrivilege(HANDLE hToken, LPCWSTR pwszPrivilege, BOOL bEnablePrivi
 
 	if (!GetTokenInformation(hToken, TokenPrivileges, pTokenPrivileges, dwTokenPrivilegesSize, &dwTokenPrivilegesSize))
 	{
-		PrintLastError(L"GetTokenInformation");
+		PRINTLASTERROR(L"GetTokenInformation");
 		goto end;
 	}
 
@@ -642,7 +642,7 @@ BOOL TokenCheckPrivilege(HANDLE hToken, LPCWSTR pwszPrivilege, BOOL bEnablePrivi
 		{
 			if (GetLastError() != ERROR_INSUFFICIENT_BUFFER)
 			{
-				PrintLastError(L"LookupPrivilegeName");
+				PRINTLASTERROR(L"LookupPrivilegeName");
 				goto end;
 			}
 		}
@@ -665,7 +665,7 @@ BOOL TokenCheckPrivilege(HANDLE hToken, LPCWSTR pwszPrivilege, BOOL bEnablePrivi
 						if (AdjustTokenPrivileges(hToken, FALSE, &tp, sizeof(TOKEN_PRIVILEGES), (PTOKEN_PRIVILEGES)NULL, (PDWORD)NULL))
 							bReturnValue = TRUE;
 						else
-							PrintLastError(L"AdjustTokenPrivileges");
+							PRINTLASTERROR(L"AdjustTokenPrivileges");
 					}
 					else
 					{
@@ -676,7 +676,7 @@ BOOL TokenCheckPrivilege(HANDLE hToken, LPCWSTR pwszPrivilege, BOOL bEnablePrivi
 				}
 			}
 			else
-				PrintLastError(L"LookupPrivilegeName");
+				PRINTLASTERROR(L"LookupPrivilegeName");
 
 			LocalFree(pwszPrivilegeNameTemp);
 		}
@@ -700,7 +700,7 @@ BOOL TokenIsNotRestricted(HANDLE hToken, PBOOL pbIsNotRestricted)
 	{
 		if (GetLastError() != ERROR_INSUFFICIENT_BUFFER)
 		{
-			PrintLastError(L"GetTokenInformation");
+			PRINTLASTERROR(L"GetTokenInformation");
 			goto end;
 		}
 	}
@@ -711,7 +711,7 @@ BOOL TokenIsNotRestricted(HANDLE hToken, PBOOL pbIsNotRestricted)
 
 	if (!GetTokenInformation(hToken, TokenRestrictedSids, pTokenGroups, dwSize, &dwSize))
 	{
-		PrintLastError(L"GetTokenInformation");
+		PRINTLASTERROR(L"GetTokenInformation");
 		goto end;
 	}
 
@@ -750,7 +750,7 @@ BOOL MiscGenerateGuidString(LPWSTR* ppwszGuid)
 	if (!*ppwszGuid)
 		goto end;
 
-	StringCchPrintf(*ppwszGuid, wcslen((LPWSTR)wstrGuid), L"%ws", (LPWSTR)wstrGuid);
+	StringCchPrintf(*ppwszGuid, wcslen((LPWSTR)wstrGuid), OBFUSCATEDW(L"%ws"), (LPWSTR)wstrGuid);
 	bReturnValue = TRUE;
 
 end:

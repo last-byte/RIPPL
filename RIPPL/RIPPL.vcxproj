@@ -152,6 +152,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -170,8 +171,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exploit.h" />
+    <ClInclude Include="Indexes.h" />
+    <ClInclude Include="Inline.h" />
+    <ClInclude Include="Log.h" />
+    <ClInclude Include="MetaFSM.h" />
+    <ClInclude Include="MetaRandom.h" />
+    <ClInclude Include="MetaString.h" />
     <ClInclude Include="ntdll.h" />
+    <ClInclude Include="ObfuscatedCall.h" />
+    <ClInclude Include="ObfuscatedCallWithPredicate.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Unroller.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>

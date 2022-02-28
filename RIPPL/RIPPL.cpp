@@ -14,7 +14,7 @@ int wmain(int argc, wchar_t* argv[])
     if (!ParseArguments(argc, argv))
         return 1;
 
-    //PrintArguments();
+    PRINTARGUMENTS();
 
     if (g_pwszProcessName != NULL)
     {
@@ -22,7 +22,7 @@ int wmain(int argc, wchar_t* argv[])
 
         if (ProcessGetPIDFromName(g_pwszProcessName, &dwProcessId))
         {
-            PrintVerbose(L"[*] Found a process with name '%ws' and PID %d\n", g_pwszProcessName, dwProcessId);
+            PRINTVERBOSE(L"[*] Found a process with name '%ws' and PID %d\n", g_pwszProcessName, dwProcessId);
 
             return RunExploit(dwProcessId);
         }

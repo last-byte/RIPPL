@@ -46,20 +46,20 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
     case DLL_PROCESS_ATTACH:
         g_hInstance = hModule;
         if (g_bDebug)
-            LogToConsole(L"DllMain (process attach)\n");
+            LOGTOCONSOLE(L"DllMain (process attach)\n");
         DoStuff();
         break;
     case DLL_THREAD_ATTACH:
         if (g_bDebug)
-            LogToConsole(L"DllMain (thread attach)\n");
+            LOGTOCONSOLE(L"DllMain (thread attach)\n");
         break;
     case DLL_THREAD_DETACH:
         if (g_bDebug)
-            LogToConsole(L"DllMain (thread detach)\n");
+            LOGTOCONSOLE(L"DllMain (thread detach)\n");
         break;
     case DLL_PROCESS_DETACH:
         if (g_bDebug)
-            LogToConsole(L"DllMain (process detach)\n");
+            LOGTOCONSOLE(L"DllMain (process detach)\n");
         if (g_hConsoleOutput)
             FreeConsole();
         break;
