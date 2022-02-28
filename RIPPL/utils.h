@@ -20,7 +20,7 @@
 #define RESUME_MODE 3
 #define LEAK_MODE 4
 
-//#define OPSEC
+#define OPSEC
 #ifndef OPSEC
 #define AUTHOR L"@last0x00"
 #define VERSION L"0.1"
