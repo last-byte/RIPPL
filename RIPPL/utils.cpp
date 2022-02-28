@@ -259,7 +259,7 @@ BOOL ProcessGetProtectionLevel(DWORD dwProcessId, PDWORD pdwProtectionLevel)
 	HANDLE hProcess = NULL;
 	PROCESS_PROTECTION_LEVEL_INFORMATION level = { 0 };
 
-	if (!(hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, dwProcessId)))
+	if (!(hProcess = LI_FN(OpenProcess)(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, dwProcessId)))
 	{
 		PRINTLASTERROR(L"OpenProcess");
 		goto end;
@@ -347,7 +347,7 @@ BOOL ProcessGetIntegrityLevel(DWORD dwProcessId, PDWORD pdwIntegrityLevel)
 	DWORD dwLength = 0;
 	DWORD dwIntegrityLevel = 0;
 
-	if (!(hProcess = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, dwProcessId)))
+	if (!(hProcess = LI_FN(OpenProcess)(PROCESS_QUERY_INFORMATION, FALSE, dwProcessId)))
 		goto end;
 
 	if (!OpenProcessToken(hProcess, TOKEN_QUERY, &hProcessToken))

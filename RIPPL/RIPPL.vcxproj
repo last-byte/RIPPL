@@ -173,13 +173,12 @@
     <ClInclude Include="exploit.h" />
     <ClInclude Include="Indexes.h" />
     <ClInclude Include="Inline.h" />
+    <ClInclude Include="lazy_importer.hpp" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="MetaFSM.h" />
     <ClInclude Include="MetaRandom.h" />
     <ClInclude Include="MetaString.h" />
     <ClInclude Include="ntdll.h" />
-    <ClInclude Include="ObfuscatedCall.h" />
-    <ClInclude Include="ObfuscatedCallWithPredicate.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Unroller.h" />
     <ClInclude Include="utils.h" />
