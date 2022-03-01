@@ -20,7 +20,7 @@
 #define RESUME_MODE 3
 #define LEAK_MODE 4
 
-#define OPSEC
+//#define OPSEC
 #ifndef OPSEC
 #define AUTHOR L"@last0x00"
 #define VERSION L"0.1"
@@ -31,6 +31,8 @@
 #define PRINTARGUMENTS() PrintArguments()
 #define WPRINTF(...) wprintf(__VA_ARGS__)
 #define ADVLOG 1
+#define OBFUSCATEDW(str) str
+#define OBFUSCATED(str) str
 #else
 #define AUTHOR L""
 #define VERSION L""
@@ -48,11 +50,11 @@
 
 #pragma warning(disable: 4503)
 
-#include "Log.h"
-#include "MetaString.h"
+//#include "Log.h"
+//#include "MetaString.h"
 #include "lazy_importer.hpp"
-
-using namespace andrivet::ADVobfuscator;
+//
+//using namespace andrivet::ADVobfuscator;
 
 extern BOOL g_bVerbose;
 extern BOOL g_bDebug;
