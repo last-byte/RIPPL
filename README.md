@@ -10,7 +10,7 @@ This tool implements a __userland__ exploit to manipulate Windows PPL protected 
 
 ## Usage
 
-Simply run the executable without any argument and you will get a detailed help/usage.
+Simply run the executable without any argument and you will get a detailed help/usage (only valid for binaries compiled without defining the `OPSEC` macro)
 
 ```console
 c:\Temp>.\rippl.exe
@@ -51,5 +51,5 @@ Examples:
   rippl.exe -S MsMpEng.exe
   rippl.exe -R MsMpEng.exe
   rippl.exe -D -f lsass.exe lsass.dmp
-  rippl.exe -D -v -f 720 out.dmp```
+  rippl.exe -D -v -f 720 out.dmp
 ```
