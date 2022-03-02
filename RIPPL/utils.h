@@ -27,7 +27,7 @@
 #define OPSEC
 #ifndef OPSEC
 #define AUTHOR L"@last0x00"
-#define VERSION L"0.1"
+#define VERSION L"0.2"
 #define PRINTDEBUG(...) PrintDebug(__VA_ARGS__)
 #define PRINTVERBOSE(...) PrintVerbose(__VA_ARGS__)
 #define PRINTLASTERROR(x) PrintLastError(x)
