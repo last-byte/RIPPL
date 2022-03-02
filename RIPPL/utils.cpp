@@ -298,41 +298,41 @@ BOOL ProcessGetProtectionLevelAsString(DWORD dwProcessId, LPWSTR* ppwszProtectio
 	switch (dwProtectionLevel)
 	{
 	case PROTECTION_LEVEL_WINTCB_LIGHT:
-		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerWinTcb-Light");
+		pwszProtectionName = L"PsProtectedSignerWinTcb-Light";
 		break;
 	case PROTECTION_LEVEL_WINDOWS:
-		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerWindows");
+		pwszProtectionName = L"PsProtectedSignerWindows";
 		break;
 	case PROTECTION_LEVEL_WINDOWS_LIGHT:
-		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerWindows-Light");
+		pwszProtectionName = L"PsProtectedSignerWindows-Light";
 		break;
 	case PROTECTION_LEVEL_ANTIMALWARE_LIGHT:
-		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerAntimalware-Light");
+		pwszProtectionName = L"PsProtectedSignerAntimalware-Light";
 		break;
 	case PROTECTION_LEVEL_LSA_LIGHT:
-		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerLsa-Light");
+		pwszProtectionName = L"PsProtectedSignerLsa-Light";
 		break;
 	case PROTECTION_LEVEL_WINTCB:
-		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerWinTcb");
+		pwszProtectionName = L"PsProtectedSignerWinTcb";
 		break;
 	case PROTECTION_LEVEL_CODEGEN_LIGHT:
-		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerCodegen-Light");
+		pwszProtectionName = L"PsProtectedSignerCodegen-Light";
 		break;
 	case PROTECTION_LEVEL_AUTHENTICODE:
-		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerAuthenticode");
+		pwszProtectionName = L"PsProtectedSignerAuthenticode";
 		break;
 	case PROTECTION_LEVEL_PPL_APP:
-		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerPplApp");
+		pwszProtectionName = L"PsProtectedSignerPplApp";
 		break;
 	case PROTECTION_LEVEL_NONE:
-		pwszProtectionName = OBFUSCATEDW(L"None");
+		pwszProtectionName = L"None";
 		break;
 	default:
-		pwszProtectionName = OBFUSCATEDW(L"Unknown");
+		pwszProtectionName = L"Unknown";
 		bReturnValue = FALSE;
 	}
 
-	StringCchPrintf(*ppwszProtectionLevel, 64, OBFUSCATEDW(L"%ws"), pwszProtectionName);
+	StringCchPrintf(*ppwszProtectionLevel, 64, L"%ws", pwszProtectionName);
 	
 	return bReturnValue;
 }
@@ -595,7 +595,7 @@ BOOL TokenGetUsername(HANDLE hToken, LPWSTR* ppwszUsername)
 	if (!*ppwszUsername)
 		goto end;
 
-	StringCchPrintf(*ppwszUsername, dwMaxSize * 2 + 1, OBFUSCATEDW(L"%ws\\%ws"), wszDomain, wszUsername);
+	StringCchPrintf(*ppwszUsername, dwMaxSize * 2 + 1, L"%ws\\%ws", wszDomain, wszUsername);
 	bReturnValue = TRUE;
 
 end:
@@ -750,7 +750,7 @@ BOOL MiscGenerateGuidString(LPWSTR* ppwszGuid)
 	if (!*ppwszGuid)
 		goto end;
 
-	StringCchPrintf(*ppwszGuid, wcslen((LPWSTR)wstrGuid), OBFUSCATEDW(L"%ws"), (LPWSTR)wstrGuid);
+	StringCchPrintf(*ppwszGuid, wcslen((LPWSTR)wstrGuid), L"%ws", (LPWSTR)wstrGuid);
 	bReturnValue = TRUE;
 
 end:
