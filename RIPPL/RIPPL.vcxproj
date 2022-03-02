@@ -141,6 +141,9 @@
     <PostBuildEvent>
       <Command>python3.exe $(SolutionDir)postbuild_RIPPL.py</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>python3.exe $(SolutionDir)DLL_encrypt.py</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -169,6 +172,9 @@
     <PostBuildEvent>
       <Command>python3.exe $(SolutionDir)postbuild_RIPPL.py</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>python3.exe $(SolutionDir)DLL_encrypt.py</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="exploit.cpp" />

@@ -131,7 +131,8 @@
       <ModuleDefinitionFile>RIPPL.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>python3.exe $(SolutionDir)DLL_encrypt.py</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -156,7 +157,8 @@
       </ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>python3.exe $(SolutionDir)DLL_encrypt.py</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

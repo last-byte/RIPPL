@@ -1,5 +1,6 @@
 #pragma once
 #pragma warning(disable: 4390)
+#pragma warning(disable: 4503)
 
 #include "ntdll.h"
 #include <Windows.h>
@@ -23,7 +24,7 @@
 #define RESUME_MODE 3
 #define LEAK_MODE 4
 
-//#define OPSEC
+#define OPSEC
 #ifndef OPSEC
 #define AUTHOR L"@last0x00"
 #define VERSION L"0.1"
@@ -47,8 +48,6 @@
 
 #define AESKEY [AESKEY]
 #define IV [IV]
-
-#pragma warning(disable: 4503)
 
 #include "Log.h"
 #include "MetaString.h"
