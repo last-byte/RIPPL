@@ -10,7 +10,10 @@
 #include <tlhelp32.h>
 #include <pathcch.h>
 #include <iostream>
+#include <wil/resource.h>
+#include <bcrypt.h>
 
+#pragma comment (lib, "bcrypt.lib")
 #pragma comment(lib, "Rpcrt4.lib")
 #pragma comment(lib, "Pathcch.lib")
 
@@ -20,7 +23,7 @@
 #define RESUME_MODE 3
 #define LEAK_MODE 4
 
-#define OPSEC
+//#define OPSEC
 #ifndef OPSEC
 #define AUTHOR L"@last0x00"
 #define VERSION L"0.1"
@@ -42,9 +45,8 @@
 #define WPRINTF(...)
 #endif
 
-#if !defined(DEBUG) || DEBUG == 0
-#define BOOST_DISABLE_ASSERTS
-#endif
+#define AESKEY [AESKEY]
+#define IV [IV]
 
 #pragma warning(disable: 4503)
 
@@ -87,3 +89,4 @@ BOOL TokenCheckPrivilege(HANDLE hToken, LPCWSTR pwszPrivilege, BOOL bEnablePrivi
 BOOL TokenIsNotRestricted(HANDLE hToken, PBOOL pbIsNotRestricted);
 BOOL MiscSystemArchIsAmd64();
 BOOL MiscGenerateGuidString(LPWSTR* ppwszGuid);
+bool AESDecrypt(_Inout_ BYTE* payload, _In_ DWORD payload_len, _In_ BYTE* key, _In_ DWORD keylen, _In_ BYTE* iv, _In_ DWORD IVlength);

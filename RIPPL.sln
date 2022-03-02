@@ -12,6 +12,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RIPPLDLL", "RIPPLDLL\RIPPLD
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Folder", "Solution Folder", "{1202314C-D86A-4E1D-AC67-92AD9CF7B45A}"
 	ProjectSection(SolutionItems) = preProject
+		DLL_encrypt.py = DLL_encrypt.py
+		postbuild_RIPPL.py = postbuild_RIPPL.py
 		README.md = README.md
 	EndProjectSection
 EndProject

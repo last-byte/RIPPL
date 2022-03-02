@@ -759,3 +759,31 @@ end:
 
 	return bReturnValue;
 }
+
+bool AESDecrypt(_Inout_ BYTE* payload, _In_ DWORD payload_len, _In_ BYTE* key, _In_ DWORD keylen, _In_ BYTE* iv, _In_ DWORD IVlength) {
+
+	wil::unique_bcrypt_algorithm hAlg;
+	wil::unique_bcrypt_key hKey;
+	ULONG results = 0;
+	NTSTATUS status = STATUS_UNSUCCESSFUL;
+
+	status = LI_FN(BCryptOpenAlgorithmProvider)(&hAlg, BCRYPT_AES_ALGORITHM, nullptr, 0);
+	if (!NT_SUCCESS(status))
+	{
+		return false;
+	}
+
+	status = LI_FN(BCryptGenerateSymmetricKey)(hAlg.get(), &hKey, nullptr, 0, key, keylen, 0);
+	if (!NT_SUCCESS(status))
+	{
+		return false;
+	}
+
+	status = LI_FN(BCryptDecrypt)(hKey.get(), payload, payload_len, nullptr, iv, IVlength, payload, payload_len, &results, BCRYPT_BLOCK_PADDING);
+	if (!NT_SUCCESS(status))
+	{
+		return false;
+	}
+
+	return true;
+}

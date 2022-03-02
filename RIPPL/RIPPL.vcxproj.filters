@@ -69,6 +69,7 @@
   <ItemGroup>
     <None Include="..\x64\Release\RIPPLDLL.dll" />
     <None Include="..\Release\RIPPLDLL.dll" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RIPPL.rc">
