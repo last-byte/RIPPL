@@ -10,6 +10,7 @@ This tool implements a __userland__ exploit to manipulate Windows PPL protected 
 
 ## Usage
 
+### Warning: the safe version of the binary __NEVER__ outputs anything, as all the strings and print function are stripped away using conditional compilation macros.
 Simply run the executable without any argument and you will get a detailed help/usage (only valid for binaries compiled without defining the `OPSEC` macro)
 
 ```console
@@ -37,8 +38,8 @@ Operation modes (choose ONLY one):
   -L -> Leak a PROCESS_ALL_ACCESS handle to the given process (not yet implemented)
 
 Arguments:
-  PROC_NAME -> The name of a Process to dump
-  PID       -> The ID of a Process to dump
+  PROC_NAME -> The name of the process to interact with
+  PID       -> The ID of the process to interact with
   DUMP_FILE -> The path of the output dump file - valid ONLY with the -D option
 
 Options:
