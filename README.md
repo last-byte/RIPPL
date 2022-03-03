@@ -38,8 +38,8 @@ Operation modes (choose ONLY one):
   -L -> Leak a PROCESS_ALL_ACCESS handle to the given process (not yet implemented)
 
 Arguments:
-  PROC_NAME -> The name of a Process to dump
-  PID       -> The ID of a Process to dump
+  PROC_NAME -> The name of the process to interact with
+  PID       -> The ID of the process to interact with
   DUMP_FILE -> The path of the output dump file - valid ONLY with the -D option
 
 Options:
