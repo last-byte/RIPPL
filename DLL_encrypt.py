@@ -35,22 +35,27 @@ except:
 try:
     file_path = os.path.dirname(sys.argv[0]) + '\\RIPPL\\utils.h'
     with open(file_path, 'r') as file :
-      filedata = file.read()
+      filedata = file.readlines()
 except:
     print("[-] Failed to read the header to modify...")
     sys.exit(-1)
 
 # Replace the target string
-key = '{ 0x' + ', 0x'.join(hex(x)[2:] for x in key_data) + ' };'
-iv = '{ 0x' + ', 0x'.join(hex(x)[2:] for x in iv_data) + ' };'
-filedata = filedata.replace('[AESKEY]', key)
-filedata = filedata.replace('[IV]', iv)
+key = '#define AESKEY { 0x' + ', 0x'.join(hex(x)[2:] for x in key_data) + ' };\n'
+iv = '#define IV { 0x' + ', 0x'.join(hex(x)[2:] for x in iv_data) + ' };\n'
+newdata = ""
+for line in filedata:
+    if "#define AESKEY" in line:
+        line = key 
+    elif "#define IV" in line:
+        line = iv 
+    newdata += line
 
 # Write the file out again
 try:
     file_path = os.path.dirname(sys.argv[0]) + '\\RIPPL\\utils.h'
     with open(file_path, 'w') as file :
-      file.write(filedata)
+      file.write(newdata)
 except:
     print("[-] Failed to write to the header...")
     sys.exit(-1)
