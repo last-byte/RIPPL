@@ -3,7 +3,7 @@ import sys
 
 # Read in the file
 try:
-    file_path = os.path.dirname(sys.argv[0]) + '\\RIPPL\\common.h'
+    file_path = os.path.dirname(sys.argv[0]) + '\\RIPPL\\utils.h'
     with open(file_path, 'r') as file :
       filedata = file.readlines()
 except:
@@ -23,7 +23,7 @@ for line in filedata:
 
 # Write the file out again
 try:
-    file_path = os.path.dirname(sys.argv[0]) + '\\RIPPL\\common.h'
+    file_path = os.path.dirname(sys.argv[0]) + '\\RIPPL\\utils.h'
     with open(file_path, 'w') as file :
       file.write(newdata)
 except:
