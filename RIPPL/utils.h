@@ -3,6 +3,7 @@
 #pragma warning(disable: 4503)
 
 #include "ntdll.h"
+#include "common.hpp"
 #include <Windows.h>
 #include <Lmcons.h>
 #include <strsafe.h>
@@ -19,13 +20,6 @@
 #pragma comment(lib, "Rpcrt4.lib")
 #pragma comment(lib, "Pathcch.lib")
 
-#define DUMP_MODE 0
-#define KILL_MODE 1
-#define SUSPEND_MODE 2
-#define RESUME_MODE 3
-#define LEAK_MODE 4
-
-#define OPSEC
 #ifndef OPSEC
 #define AUTHOR L"@last0x00"
 #define VERSION L"0.3"

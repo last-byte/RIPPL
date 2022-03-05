@@ -183,6 +183,7 @@
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="common.hpp" />
     <ClInclude Include="exploit.h" />
     <ClInclude Include="Indexes.h" />
     <ClInclude Include="Inline.h" />

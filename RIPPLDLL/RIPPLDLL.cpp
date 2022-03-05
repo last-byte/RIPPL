@@ -41,12 +41,14 @@ int g_intExecutionMode = -1;
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
 {
+    DEBUGLOG(L"Entered DLL main!\n");
     switch (ul_reason_for_call)
     {
     case DLL_PROCESS_ATTACH:
         g_hInstance = hModule;
         if (g_bDebug)
             LOGTOCONSOLE(L"DllMain (process attach)\n");
+        
         DoStuff();
         break;
     case DLL_THREAD_ATTACH:

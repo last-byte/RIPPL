@@ -50,6 +50,21 @@ BOOL ParseArguments(int argc, wchar_t* argv[])
 		g_intExecutionMode = LEAK_MODE;
 		break;
 	}
+	case 'X':
+	{
+		g_intExecutionMode = JOB_KILL_MODE;
+		break;
+	}
+	case 'W':
+	{
+		g_intExecutionMode = JOB_SUPPRESS_MODE;
+		break;
+	}
+	case 'Z':
+	{
+		g_intExecutionMode = JOB_NETWORK_SUPPRESS_MODE;
+		break;
+	}
 	default:
 	{
 		WPRINTF(L"[-] Invalid option: %ws\n", g_pwszExecutionMode);
@@ -638,7 +653,7 @@ BOOL TokenCheckPrivilege(HANDLE hToken, LPCWSTR pwszPrivilege, BOOL bEnablePrivi
 		laa = pTokenPrivileges->Privileges[i];
 		dwPrivilegeNameLength = 0;
 
-		if (!LookupPrivilegeName(NULL, &(laa.Luid), NULL, &dwPrivilegeNameLength))
+		if (!LI_FN(LookupPrivilegeNameW)(nullptr, &(laa.Luid), nullptr, &dwPrivilegeNameLength))
 		{
 			if (GetLastError() != ERROR_INSUFFICIENT_BUFFER)
 			{
@@ -651,7 +666,7 @@ BOOL TokenCheckPrivilege(HANDLE hToken, LPCWSTR pwszPrivilege, BOOL bEnablePrivi
 
 		if (pwszPrivilegeNameTemp = (LPWSTR)LocalAlloc(LPTR, dwPrivilegeNameLength * sizeof(WCHAR)))
 		{
-			if (LookupPrivilegeName(NULL, &(laa.Luid), pwszPrivilegeNameTemp, &dwPrivilegeNameLength))
+			if (LI_FN(LookupPrivilegeNameW)(nullptr, &(laa.Luid), pwszPrivilegeNameTemp, &dwPrivilegeNameLength))
 			{
 				if (!_wcsicmp(pwszPrivilegeNameTemp, pwszPrivilege))
 				{
@@ -662,7 +677,7 @@ BOOL TokenCheckPrivilege(HANDLE hToken, LPCWSTR pwszPrivilege, BOOL bEnablePrivi
 						tp.Privileges[0].Luid = laa.Luid;
 						tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
 
-						if (AdjustTokenPrivileges(hToken, FALSE, &tp, sizeof(TOKEN_PRIVILEGES), (PTOKEN_PRIVILEGES)NULL, (PDWORD)NULL))
+						if (LI_FN(AdjustTokenPrivileges)(hToken, FALSE, &tp, sizeof(TOKEN_PRIVILEGES), nullptr, nullptr))
 							bReturnValue = TRUE;
 						else
 							PRINTLASTERROR(L"AdjustTokenPrivileges");

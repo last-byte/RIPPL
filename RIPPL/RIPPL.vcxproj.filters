@@ -65,6 +65,9 @@
     <ClInclude Include="Unroller.h">
       <Filter>Header Files\ADVObfuscator</Filter>
     </ClInclude>
+    <ClInclude Include="common.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\x64\Release\RIPPLDLL.dll" />

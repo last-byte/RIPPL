@@ -84,7 +84,7 @@ namespace andrivet { namespace ADVobfuscator {
 
   private:
       // Encrypt / decrypt a character of the original string with the key
-      constexpr char key() const { return key_; }
+      constexpr wchar_t key() const { return key_; }
       constexpr wchar_t ALWAYS_INLINE encrypt(wchar_t c, int k) const { return c ^ k; }
       constexpr wchar_t decrypt(wchar_t c) const { return encrypt(c, key()); }
 
@@ -141,7 +141,7 @@ namespace andrivet { namespace ADVobfuscator {
 
   private:
       // Encrypt / decrypt a character of the original string with the key
-      constexpr char key(size_t position) const { return static_cast<char>(key_ + position); }
+      constexpr wchar_t key(size_t position) const { return static_cast<wchar_t>(key_ + position); }
       constexpr wchar_t ALWAYS_INLINE encrypt(wchar_t c, size_t position) const { return c ^ key(position); }
       constexpr wchar_t decrypt(wchar_t c, size_t position) const { return encrypt(c, position); }
 
@@ -198,7 +198,7 @@ namespace andrivet { namespace ADVobfuscator {
   private:
       // Encrypt / decrypt a character of the original string with the key
       // Be sure that the encryption key is never 0.
-      constexpr char key(char key) const { return 1 + (key % 13); }
+      constexpr wchar_t key(wchar_t key) const { return 1 + (key % 13); }
       constexpr wchar_t ALWAYS_INLINE encrypt(wchar_t c) const { return c + key(K); }
       constexpr wchar_t decrypt(wchar_t c) const { return c - key(K); }
 
