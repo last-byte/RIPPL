@@ -7,6 +7,6 @@
 #define LEAK_MODE 4 // -L
 #define JOB_SUPPRESS_MODE 5 // -X
 #define JOB_KILL_MODE 6 // -W
-#define JOB_NETWORK_SUPPRESS_MODE 7 // -Z
+#define SUICIDE_MODE 7 // -Z
 
-#define OPSEC
+//#define OPSEC

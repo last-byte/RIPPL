@@ -62,7 +62,7 @@ BOOL ParseArguments(int argc, wchar_t* argv[])
 	}
 	case 'Z':
 	{
-		g_intExecutionMode = JOB_NETWORK_SUPPRESS_MODE;
+		g_intExecutionMode = SUICIDE_MODE;
 		break;
 	}
 	default:

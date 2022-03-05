@@ -41,30 +41,44 @@ int g_intExecutionMode = -1;
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
 {
-    DEBUGLOG(L"Entered DLL main!\n");
+    
     switch (ul_reason_for_call)
     {
     case DLL_PROCESS_ATTACH:
+    {
+        DEBUGLOG(L"DLL main called with reason DLL_PROCESS_ATTACH!\n");
         g_hInstance = hModule;
         if (g_bDebug)
             LOGTOCONSOLE(L"DllMain (process attach)\n");
-        
+
         DoStuff();
         break;
+    }
     case DLL_THREAD_ATTACH:
+    {
+        DEBUGLOG(L"DLL main called with reason DLL_THREAD_ATTACH!\n");
         if (g_bDebug)
             LOGTOCONSOLE(L"DllMain (thread attach)\n");
         break;
+    }
+
     case DLL_THREAD_DETACH:
+    {
+        DEBUGLOG(L"DLL main called with reason DLL_THREAD_DETACH!\n");
         if (g_bDebug)
             LOGTOCONSOLE(L"DllMain (thread detach)\n");
         break;
+    }
+
     case DLL_PROCESS_DETACH:
+    {
+        DEBUGLOG(L"DLL main called with reason DLL_PROCESS_DETACH!\n");
         if (g_bDebug)
             LOGTOCONSOLE(L"DllMain (process detach)\n");
         if (g_hConsoleOutput)
             FreeConsole();
         break;
+    }
     }
     return TRUE;
 }
