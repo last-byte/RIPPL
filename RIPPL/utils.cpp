@@ -157,6 +157,9 @@ VOID PrintUsage()
 		"  -S -> Suspend the given process\n"
 		"  -R -> Resume the previously suspended process\n"
 		"  -L -> Leak a PROCESS_ALL_ACCESS handle to the given process\n"
+		"  -X -> Kill the given process by assigning it to a job object and terminating the object\n"
+		"  -W -> Freeze the process by assigning it to a job object and severely constraining CPU resources of the object\n"
+		"  -Z -> Kill the given process by injecting a thread into it which calls exit(0)\n"
 		"\n"
 	);
 

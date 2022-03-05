@@ -36,6 +36,9 @@ Operation modes (choose ONLY one):
   -S -> Suspend the given process
   -R -> Resume the previously suspended process
   -L -> Leak a PROCESS_ALL_ACCESS handle to the given process (not yet implemented)
+  -X -> Kill the given process by assigning it to a job object and terminating the object
+  -W -> Freeze the process by assigning it to a job object and severely constraining CPU resources of the object
+  -Z -> Kill the given process by injecting a thread into it which calls exit(0)
 
 Arguments:
   PROC_NAME -> The name of the process to interact with
