@@ -9,4 +9,4 @@
 #define JOB_KILL_MODE 6 // -W
 #define SUICIDE_MODE 7 // -Z
 
-//#define OPSEC
+#define OPSEC
