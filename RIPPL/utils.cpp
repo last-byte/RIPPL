@@ -71,6 +71,20 @@ BOOL ParseArguments(int argc, wchar_t* argv[])
 		g_intExecutionMode = TOKEN_DOWNGRADE_MODE;
 		break;
 	}
+
+	case 'U':
+	{
+		g_intExecutionMode = DRIVER_UNLOAD_MODE;
+		if (argc < 4)
+		{
+			PRINTLASTERROR(L"[-] Too few arguments for driver unload mode!\n");
+			PRINTUSAGE();
+			return FALSE;
+		}
+		argc--;
+		g_pwszDumpFilePath = argv[argc];
+		break;
+	}
 	default:
 	{
 		WPRINTF(L"[-] Invalid option: %ws\n", g_pwszExecutionMode);
@@ -79,16 +93,19 @@ BOOL ParseArguments(int argc, wchar_t* argv[])
 	}
 	}
 
-	// Read target process name or pid
-	argc--;
-	g_pwszProcessName = argv[argc];
+	if (g_intExecutionMode != DRIVER_UNLOAD_MODE)
+	{
+		// Read target process name or pid
+		argc--;
+		g_pwszProcessName = argv[argc];
 
-	// Try to interpret target process argument as a number (PID rather than name)
-	g_dwProcessId = wcstoul(g_pwszProcessName, nullptr, 10);
+		// Try to interpret target process argument as a number (PID rather than name)
+		g_dwProcessId = wcstoul(g_pwszProcessName, nullptr, 10);
 
-	// If the process name turns out to be a PID, unset g_pwszProcessName
-	if (g_dwProcessId != 0)
-		g_pwszProcessName = NULL;
+		// If the process name turns out to be a PID, unset g_pwszProcessName
+		if (g_dwProcessId != 0)
+			g_pwszProcessName = NULL;
+	}
 
 	// Parse options
 	while ((argc > 2) && (argv[2][0] == '-'))

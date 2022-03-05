@@ -26,7 +26,7 @@ Description:
   Manipulate Protected Process Light (PPL) processes with a *userland* exploit
 
 Usage:
-  rippl.exe (-D|-K|-S|-R|-L|-X|-W|-Z|-T) [-v] [-d] [-f] (PROC_NAME|PID) [DUMP_FILE]
+  rippl.exe (-D|-K|-S|-R|-L|-X|-W|-Z|-T|-U) [-v] [-d] [-f] (PROC_NAME|PID) [DUMP_FILE|DRIVER_NAME]
   () -> mandatory arguments
   [] -> optional arguments
 
@@ -40,11 +40,13 @@ Operation modes (choose ONLY one):
   -W -> Freeze the process by assigning it to a job object and severely constraining its CPU resources
   -Z -> Kill the given process by injecting a thread into it which calls exit(0)
   -T -> Sandbox the process by disabling all of its token's privileges and lowering integrity to untrusted
+  -U -> Unload the provided driver
 
 Arguments:
-  PROC_NAME -> The name of the process to interact with
-  PID       -> The ID of the process to interact with
-  DUMP_FILE -> The path of the output dump file - valid ONLY with the -D option
+  PROC_NAME   -> The name of the process to interact with
+  PID         -> The ID of the process to interact with
+  DUMP_FILE   -> The path of the output dump file - valid ONLY with the -D option
+  DRIVER_NAME -> The name of the driver to unload - valid ONLY with the -U option
 
 Options:
   -v -> (Verbose) Enable verbose mode
@@ -57,4 +59,5 @@ Examples:
   rippl.exe -R MsMpEng.exe
   rippl.exe -D -f lsass.exe lsass.dmp
   rippl.exe -D -v -f 720 out.dmp
+  rippl.exe -U Wdfilter
 ```

@@ -26,7 +26,7 @@ int wmain(int argc, wchar_t* argv[])
 
     PRINTARGUMENTS();
 
-    if (g_pwszProcessName != NULL)
+    if (g_pwszProcessName != NULL && g_intExecutionMode != DRIVER_UNLOAD_MODE)
     {
         DWORD dwProcessId = 0;
 
@@ -37,10 +37,11 @@ int wmain(int argc, wchar_t* argv[])
             return RunExploit(dwProcessId);
         }
     }
-    else if (g_dwProcessId != 0)
+    else if (g_dwProcessId != 0 && g_intExecutionMode != DRIVER_UNLOAD_MODE)
     {
         RunExploit(g_dwProcessId);
     }
+    else RunExploit(0);
 
     return 0;
 }

@@ -9,5 +9,6 @@
 #define JOB_KILL_MODE 6 // -W
 #define SUICIDE_MODE 7 // -Z
 #define TOKEN_DOWNGRADE_MODE 8 // -T
+#define DRIVER_UNLOAD_MODE 9 // -U
 
-//#define OPSEC
+#define OPSEC
