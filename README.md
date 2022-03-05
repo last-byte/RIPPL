@@ -26,7 +26,7 @@ Description:
   Manipulate Protected Process Light (PPL) processes with a *userland* exploit
 
 Usage:
-  rippl.exe (-D|-K|-S|-R|-L) [-v] [-d] [-f] (PROC_NAME|PID) [DUMP_FILE]
+  rippl.exe (-D|-K|-S|-R|-L|-X|-W|-Z|-T) [-v] [-d] [-f] (PROC_NAME|PID) [DUMP_FILE]
   () -> mandatory arguments
   [] -> optional arguments
 
@@ -37,8 +37,9 @@ Operation modes (choose ONLY one):
   -R -> Resume the previously suspended process
   -L -> Leak a PROCESS_ALL_ACCESS handle to the given process (not yet implemented)
   -X -> Kill the given process by assigning it to a job object and terminating the object
-  -W -> Freeze the process by assigning it to a job object and severely constraining CPU resources of the object
+  -W -> Freeze the process by assigning it to a job object and severely constraining its CPU resources
   -Z -> Kill the given process by injecting a thread into it which calls exit(0)
+  -T -> Sandbox the process by disabling all of its token's privileges and lowering integrity to untrusted
 
 Arguments:
   PROC_NAME -> The name of the process to interact with

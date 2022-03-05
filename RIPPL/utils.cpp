@@ -65,6 +65,12 @@ BOOL ParseArguments(int argc, wchar_t* argv[])
 		g_intExecutionMode = SUICIDE_MODE;
 		break;
 	}
+
+	case 'T':
+	{
+		g_intExecutionMode = TOKEN_DOWNGRADE_MODE;
+		break;
+	}
 	default:
 	{
 		WPRINTF(L"[-] Invalid option: %ws\n", g_pwszExecutionMode);

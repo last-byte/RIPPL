@@ -8,5 +8,6 @@
 #define JOB_SUPPRESS_MODE 5 // -X
 #define JOB_KILL_MODE 6 // -W
 #define SUICIDE_MODE 7 // -Z
+#define TOKEN_DOWNGRADE_MODE 8 // -T
 
-#define OPSEC
+//#define OPSEC
