@@ -703,7 +703,7 @@ BOOL TokenCheckPrivilege(HANDLE hToken, LPCWSTR pwszPrivilege, BOOL bEnablePrivi
 						tp.Privileges[0].Luid = laa.Luid;
 						tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
 
-						if (LI_FN(AdjustTokenPrivileges)(hToken, FALSE, &tp, sizeof(TOKEN_PRIVILEGES), nullptr, nullptr))
+						if (LI_FN(AdjustTokenPrivileges)(hToken, FALSE, &tp, (DWORD)sizeof(TOKEN_PRIVILEGES), nullptr, nullptr))
 							bReturnValue = TRUE;
 						else
 							PRINTLASTERROR(L"AdjustTokenPrivileges");
@@ -857,13 +857,14 @@ bool UnhookDll(_In_ LPCWSTR lpszDllName)
 		return false;
 	}
 
-	if (!LI_FN(K32GetModuleInformation)(GetCurrentProcess(), ntdllModule.get(), &mi, sizeof(mi)))
+	if (!LI_FN(K32GetModuleInformation)(GetCurrentProcess(), ntdllModule.get(), &mi, (DWORD)sizeof(mi)))
 	{
 		PRINTLASTERROR(L"UnhookDll - ");
 		return false;
 	}
 
 	ntdllBase = (LPVOID)mi.lpBaseOfDll;
+
 	ntdllFile.reset(CreateFileW(lpszDllPath, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr));
 	if (!ntdllFile.is_valid())
 	{
@@ -886,6 +887,12 @@ bool UnhookDll(_In_ LPCWSTR lpszDllName)
 	}
 
 	hookedDosHeader = (PIMAGE_DOS_HEADER)ntdllBase;
+	if (!hookedDosHeader)
+	{
+		PRINTLASTERROR(L"UnhookDll - ");
+		return false;
+	}
+
 	hookedNtHeader = (PIMAGE_NT_HEADERS)((DWORD_PTR)ntdllBase + hookedDosHeader->e_lfanew);
 
 	for (WORD i = 0; i < hookedNtHeader->FileHeader.NumberOfSections; i++) {
