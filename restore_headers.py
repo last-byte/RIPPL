@@ -30,4 +30,4 @@ except:
     print("[-] Failed to write to the header...")
     sys.exit(-1)
 
-print("[+] Postbuild done!")
+print("[+] Headers restored!")
