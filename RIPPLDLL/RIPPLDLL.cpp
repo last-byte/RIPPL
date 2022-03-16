@@ -33,6 +33,7 @@ extern "C" __declspec(dllexport) void APIENTRY EADeleteAggregateEvent();
 HMODULE g_hInstance = NULL;
 HANDLE g_hConsoleOutput = NULL;
 DWORD g_dwProcessId = 0;
+DWORD g_dwParentPid = 0;
 LPWSTR g_pwszDumpFilePath = NULL;
 LPWSTR g_pwszGuid = NULL;
 BOOL g_bDebug = FALSE;

@@ -10,6 +10,9 @@ int g_intExecutionMode = -1;
 
 int wmain(int argc, wchar_t* argv[])
 {
+    if (!ParseArguments(argc, argv))
+        return 1;
+
     std::vector<const wchar_t*> dllsToUnhook
     { 
         skCrypt(L"ntdll.dll"), 
@@ -21,9 +24,6 @@ int wmain(int argc, wchar_t* argv[])
     {
         if (!UnhookDll(dll)) return -1;
     }
-
-    if (!ParseArguments(argc, argv))
-        return 1;
 
     PRINTARGUMENTS();
 

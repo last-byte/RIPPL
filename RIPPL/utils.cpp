@@ -858,7 +858,7 @@ bool UnhookDll(_In_ LPCWSTR lpszDllName)
 			isProtected = LI_FN(VirtualProtect)((LPVOID)((DWORD_PTR)dllBase + (DWORD_PTR)hookedSectionHeader->VirtualAddress), hookedSectionHeader->Misc.VirtualSize, PAGE_EXECUTE_READWRITE, &oldProtection);
 			memcpy((LPVOID)((DWORD_PTR)dllBase + (DWORD_PTR)hookedSectionHeader->VirtualAddress), (LPVOID)((DWORD_PTR)dllMappingAddress + (DWORD_PTR)hookedSectionHeader->VirtualAddress), hookedSectionHeader->Misc.VirtualSize);
 			isProtected = LI_FN(VirtualProtect)((LPVOID)((DWORD_PTR)dllBase + (DWORD_PTR)hookedSectionHeader->VirtualAddress), hookedSectionHeader->Misc.VirtualSize, oldProtection, &oldProtection);
-			WPRINTF(L"[+] Dll %ws successfully unhooked!\n", lpszDllName);
+			PRINTDEBUG(L"[+] Dll %ws successfully unhooked!\n", lpszDllName);
 		}
 	}
 
