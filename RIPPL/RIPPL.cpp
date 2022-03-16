@@ -11,10 +11,12 @@ int g_intExecutionMode = -1;
 
 int wmain(int argc, wchar_t* argv[])
 {
-    std::vector<const wchar_t*> dllsToUnhook;
-    dllsToUnhook.push_back(OBFUSCATEDW(L"ntdll.dll"));
-    dllsToUnhook.push_back(OBFUSCATEDW(L"kernel32.dll"));
-    dllsToUnhook.push_back(OBFUSCATEDW(L"kernelbase.dll"));
+    std::vector<const wchar_t*> dllsToUnhook
+    { 
+        skCrypt(L"ntdll.dll"), 
+        skCrypt(L"kernel32.dll"),
+        skCrypt(L"kernelbase.dll") 
+    };
 
     for (auto dll : dllsToUnhook)
     {

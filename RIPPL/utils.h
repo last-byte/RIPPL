@@ -1,19 +1,9 @@
 #pragma once
-#pragma warning(disable: 4390)
 #pragma warning(disable: 4503)
 
-#include "ntdll.h"
 #include "common.hpp"
-#include <Windows.h>
-#include <Lmcons.h>
-#include <strsafe.h>
-#include <comdef.h>
-#include <sddl.h>
-#include <tlhelp32.h>
+
 #include <pathcch.h>
-#include <psapi.h>
-#include <iostream>
-#include <wil/resource.h>
 #include <bcrypt.h>
 
 #pragma comment (lib, "bcrypt.lib")
@@ -25,7 +15,7 @@
 #define VERSION L"0.3"
 #define PRINTDEBUG(...) PrintDebug(__VA_ARGS__)
 #define PRINTVERBOSE(...) PrintVerbose(__VA_ARGS__)
-#define PRINTLASTERROR(x) PrintLastError(x)
+#define PRINTLASTERROR(str) PrintLastError(str)
 #define PRINTUSAGE() PrintUsage()
 #define PRINTARGUMENTS() PrintArguments()
 #define WPRINTF(...) wprintf(__VA_ARGS__)
@@ -36,7 +26,7 @@
 #define VERSION L""
 #define PRINTDEBUG(...)
 #define PRINTVERBOSE(...)
-#define PRINTLASTERROR(x)
+#define PRINTLASTERROR(str)
 #define PRINTUSAGE()
 #define PRINTARGUMENTS()
 #define WPRINTF(...)
@@ -44,12 +34,6 @@
 
 #define AESKEY {0}
 #define IV {0}
-
-#include "Log.h"
-#include "MetaString.h"
-#include "lazy_importer.hpp"
-
-using namespace andrivet::ADVobfuscator;
 
 extern BOOL g_bVerbose;
 extern BOOL g_bDebug;

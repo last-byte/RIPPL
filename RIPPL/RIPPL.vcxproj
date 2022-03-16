@@ -157,9 +157,10 @@
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <Optimization>MinSpace</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -185,16 +186,10 @@
   <ItemGroup>
     <ClInclude Include="common.hpp" />
     <ClInclude Include="exploit.h" />
-    <ClInclude Include="Indexes.h" />
-    <ClInclude Include="Inline.h" />
     <ClInclude Include="lazy_importer.hpp" />
-    <ClInclude Include="Log.h" />
-    <ClInclude Include="MetaFSM.h" />
-    <ClInclude Include="MetaRandom.h" />
-    <ClInclude Include="MetaString.h" />
     <ClInclude Include="ntdll.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="Unroller.h" />
+    <ClInclude Include="skCrypter.hpp" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>

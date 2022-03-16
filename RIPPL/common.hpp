@@ -1,4 +1,5 @@
 #pragma once
+#pragma warning(disable: 4390)
 
 #define DUMP_MODE 0 // -D
 #define KILL_MODE 1 // -K
@@ -11,4 +12,21 @@
 #define TOKEN_DOWNGRADE_MODE 8 // -T
 #define DRIVER_UNLOAD_MODE 9 // -U
 
-#define OPSEC
+//#define OPSEC
+
+#include <Windows.h>
+#include <Lmcons.h>
+#include <strsafe.h>
+#include <tlhelp32.h>
+#include <comdef.h>
+#include <sddl.h>
+#include <wil/resource.h>
+#include <psapi.h>
+#include <aclapi.h>
+#include <iostream>
+#include <vector>
+#include <string>
+
+#include "lazy_importer.hpp"
+#include "ntdll.h"
+#include "skCrypter.hpp"

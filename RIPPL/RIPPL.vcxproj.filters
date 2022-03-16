@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\ADVObfuscator">
-      <UniqueIdentifier>{cbfb3bd5-d99b-49eb-bda7-69cb8708bd66}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="exploit.cpp">
@@ -44,28 +41,10 @@
     <ClInclude Include="lazy_importer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Indexes.h">
-      <Filter>Header Files\ADVObfuscator</Filter>
-    </ClInclude>
-    <ClInclude Include="Inline.h">
-      <Filter>Header Files\ADVObfuscator</Filter>
-    </ClInclude>
-    <ClInclude Include="Log.h">
-      <Filter>Header Files\ADVObfuscator</Filter>
-    </ClInclude>
-    <ClInclude Include="MetaFSM.h">
-      <Filter>Header Files\ADVObfuscator</Filter>
-    </ClInclude>
-    <ClInclude Include="MetaRandom.h">
-      <Filter>Header Files\ADVObfuscator</Filter>
-    </ClInclude>
-    <ClInclude Include="MetaString.h">
-      <Filter>Header Files\ADVObfuscator</Filter>
-    </ClInclude>
-    <ClInclude Include="Unroller.h">
-      <Filter>Header Files\ADVObfuscator</Filter>
-    </ClInclude>
     <ClInclude Include="common.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="skCrypter.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

