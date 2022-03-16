@@ -1,6 +1,5 @@
 #include "exploit.h"
 
-BOOL g_bVerbose = false;
 BOOL g_bDebug = false;
 BOOL g_bForce = false;
 DWORD g_dwProcessId = 0;
@@ -34,7 +33,7 @@ int wmain(int argc, wchar_t* argv[])
 
         if (ProcessGetPIDFromName(g_pwszProcessName, &dwProcessId))
         {
-            PRINTVERBOSE(L"[*] Found a process with name '%ws' and PID %d\n", g_pwszProcessName, dwProcessId);
+            PRINTDEBUG(L"[*] Found a process with name '%ws' and PID %d\n", g_pwszProcessName, dwProcessId);
 
             return RunExploit(dwProcessId);
         }

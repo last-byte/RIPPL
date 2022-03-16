@@ -116,11 +116,7 @@ BOOL ParseArguments(int argc, wchar_t* argv[])
 			bReturnValue = FALSE;
 			bHelp = TRUE;
 			break;
-		case 'v':
-			g_bVerbose = TRUE;
-			break;
 		case 'd':
-			g_bVerbose = TRUE;
 			g_bDebug = TRUE;
 			break;
 		case 'f':
@@ -145,7 +141,7 @@ BOOL ParseArguments(int argc, wchar_t* argv[])
 
 VOID PrintArguments()
 {
-	PRINTVERBOSE(L"Verbose=%d | Debug=%d | Force=%d | Execution Mode='%ws' | Proc='%ws' | PID=%d | File='%ws'\n", g_bVerbose, g_bDebug, g_bForce, g_pwszExecutionMode, g_pwszProcessName, g_dwProcessId, g_pwszDumpFilePath);
+	PRINTDEBUG(L"Debug=%d | Force=%d | Execution Mode='%ws' | Proc='%ws' | PID=%d | File='%ws'\n", g_bDebug, g_bForce, g_pwszExecutionMode, g_pwszProcessName, g_dwProcessId, g_pwszDumpFilePath);
 }
 
 VOID PrintUsage()
@@ -216,45 +212,6 @@ VOID PrintLastError(LPCWSTR pwszFunctionName)
 {
 	DWORD dwLastError = GetLastError();
 	wprintf(L"[-] %ws failed with error code %d - %ws\n", pwszFunctionName, dwLastError, _com_error(HRESULT_FROM_WIN32(dwLastError)).ErrorMessage());
-}
-
-VOID PrintVerbose(LPCWSTR pwszFormat, ...)
-{
-	if (g_bVerbose)
-	{
-		LPWSTR pwszVerboseString = NULL;
-		DWORD dwVerboseStringLen = 0;
-		va_list va;
-		size_t st_Offset = 0;
-		WCHAR wszUsername[UNLEN + 1] = { 0 };
-		DWORD dwUsernameLen = UNLEN;
-
-		GetUserName(wszUsername, &dwUsernameLen);
-
-		va_start(va, pwszFormat);
-		if (g_bDebug)
-			dwVerboseStringLen += _scwprintf(L"[%ws] ", wszUsername) * sizeof(WCHAR);
-		
-		dwVerboseStringLen += _vscwprintf(pwszFormat, va) * sizeof(WCHAR) + 2;
-		pwszVerboseString = (LPWSTR)LocalAlloc(LPTR, dwVerboseStringLen);
-
-		if (pwszVerboseString)
-		{
-			if (g_bDebug)
-				StringCbPrintf(pwszVerboseString, dwVerboseStringLen, L"[%ws] ", wszUsername);
-
-			if (SUCCEEDED(StringCbLength(pwszVerboseString, dwVerboseStringLen, &st_Offset)))
-			{
-				StringCbVPrintf(&pwszVerboseString[st_Offset / sizeof(WCHAR)], dwVerboseStringLen - st_Offset, pwszFormat, va);
-
-				WPRINTF(L"%ws", pwszVerboseString);
-			}
-
-			LocalFree(pwszVerboseString);
-		}
-
-		va_end(va);
-	}
 }
 
 VOID PrintDebug(LPCWSTR pwszFormat, ...)

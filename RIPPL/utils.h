@@ -14,7 +14,6 @@
 #define AUTHOR L"@last0x00"
 #define VERSION L"0.3"
 #define PRINTDEBUG(...) PrintDebug(__VA_ARGS__)
-#define PRINTVERBOSE(...) PrintVerbose(__VA_ARGS__)
 #define PRINTLASTERROR(str) PrintLastError(str)
 #define PRINTUSAGE() PrintUsage()
 #define PRINTARGUMENTS() PrintArguments()
@@ -25,7 +24,6 @@
 #define AUTHOR L""
 #define VERSION L""
 #define PRINTDEBUG(...)
-#define PRINTVERBOSE(...)
 #define PRINTLASTERROR(str)
 #define PRINTUSAGE()
 #define PRINTARGUMENTS()
@@ -35,7 +33,6 @@
 #define AESKEY {0}
 #define IV {0}
 
-extern BOOL g_bVerbose;
 extern BOOL g_bDebug;
 extern BOOL g_bForce;
 extern DWORD g_dwProcessId;
@@ -49,7 +46,6 @@ VOID PrintArguments();
 VOID PrintUsage();
 
 VOID PrintLastError(LPCWSTR pwszFunctionName);
-VOID PrintVerbose(LPCWSTR pwszFormat, ...);
 VOID PrintDebug(LPCWSTR pwszFormat, ...);
 
 BOOL ProcessGetProtectionLevel(DWORD dwProcessId, PDWORD pdwProtectionLevel);
