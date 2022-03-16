@@ -192,8 +192,7 @@ VOID PrintUsage()
 
 	wprintf(
 		L"Options:\n"
-		"  -v -> (Verbose) Enable verbose mode\n"
-		"  -d -> (Debug) Enable debug mode (implies verbose)\n"
+		"  -d -> (Debug) Enable debug mode\n"
 		"  -f -> (Force) Bypass DefineDosDevice error check\n"
 		"\n"
 	);

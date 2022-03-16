@@ -49,8 +49,7 @@ Arguments:
   DRIVER_NAME -> The name of the driver to unload - valid ONLY with the -U option
 
 Options:
-  -v -> (Verbose) Enable verbose mode
-  -d -> (Debug) Enable debug mode (implies verbose)
+  -d -> (Debug) Enable debug mode
   -f -> (Force) Bypass DefineDosDevice error check
 
 Examples:

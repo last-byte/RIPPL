@@ -35,7 +35,6 @@ HANDLE g_hConsoleOutput = NULL;
 DWORD g_dwProcessId = 0;
 LPWSTR g_pwszDumpFilePath = NULL;
 LPWSTR g_pwszGuid = NULL;
-BOOL g_bVerbose = FALSE;
 BOOL g_bDebug = FALSE;
 int g_intExecutionMode = -1;
 
