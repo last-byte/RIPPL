@@ -59,6 +59,6 @@ Examples:
   rippl.exe -S MsMpEng.exe
   rippl.exe -R MsMpEng.exe
   rippl.exe -D -f lsass.exe lsass.dmp
-  rippl.exe -D -v -f 720 out.dmp
+  rippl.exe -D -d -f 720 out.dmp
   rippl.exe -U Wdfilter
 ```
