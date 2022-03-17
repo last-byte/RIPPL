@@ -12,7 +12,7 @@
 #define TOKEN_DOWNGRADE_MODE 8 // -T
 #define DRIVER_UNLOAD_MODE 9 // -U
 
-#define OPSEC // OPSEC enabling macro, if defined the program will not output verbose output and won't have embedded strings (aside from the Success or Fail)
+//#define OPSEC // OPSEC enabling macro, if defined the program will not output verbose output and won't have embedded strings (aside from the Success or Fail)
 
 #include <Windows.h>
 #include <Lmcons.h>

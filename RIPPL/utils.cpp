@@ -209,7 +209,7 @@ VOID PrintUsage()
 
 VOID PrintLastError(LPCWSTR pwszFunctionName)
 {
-	DWORD dwLastError = GetLastError();
+	DWORD dwLastError = LI_FN(GetLastError)();
 	wprintf(L"[-] %ws failed with error code %d - %ws\n", pwszFunctionName, dwLastError, _com_error(HRESULT_FROM_WIN32(dwLastError)).ErrorMessage());
 }
 
@@ -351,7 +351,7 @@ BOOL ProcessGetIntegrityLevel(DWORD dwProcessId, PDWORD pdwIntegrityLevel)
 		goto end;
 
 	GetTokenInformation(hProcessToken, TokenIntegrityLevel, pLabel, dwLength, &dwLength);
-	if (GetLastError() != ERROR_INSUFFICIENT_BUFFER)
+	if (LI_FN(GetLastError)() != ERROR_INSUFFICIENT_BUFFER)
 		goto end;
 
 	pLabel = (PTOKEN_MANDATORY_LABEL)LocalAlloc(LPTR, dwLength);
@@ -452,11 +452,11 @@ HANDLE ObjectManagerCreateDirectory(LPCWSTR dirname)
 	HANDLE hDirectory = NULL;
 	NTSTATUS status = 0;
 
-	RtlInitUnicodeString(&name, dirname);
+	LI_FN(RtlInitUnicodeString)(&name, dirname);
 	InitializeObjectAttributes(&oa, &name, OBJ_CASE_INSENSITIVE, NULL, NULL);
 
-	status = NtCreateDirectoryObjectEx(&hDirectory, DIRECTORY_ALL_ACCESS, &oa, NULL, FALSE);
-	SetLastError(RtlNtStatusToDosError(status));
+	status = LI_FN(NtCreateDirectoryObjectEx)(&hDirectory, DIRECTORY_ALL_ACCESS, &oa, nullptr, FALSE);
+	SetLastError(LI_FN(RtlNtStatusToDosError)(status));
 	if (status != 0)
 	{
 		PRINTLASTERROR(L"NtCreateDirectoryObjectEx");
@@ -474,12 +474,12 @@ HANDLE ObjectManagerCreateSymlink(LPCWSTR linkname, LPCWSTR targetname)
 	HANDLE hLink = NULL;
 	NTSTATUS status = 0;
 
-	RtlInitUnicodeString(&name, linkname);
-	RtlInitUnicodeString(&target, targetname);
+	LI_FN(RtlInitUnicodeString)(&name, linkname);
+	LI_FN(RtlInitUnicodeString)(&target, targetname);
 	InitializeObjectAttributes(&oa, &name, OBJ_CASE_INSENSITIVE, NULL, NULL);
 
-	status = NtCreateSymbolicLinkObject(&hLink, SYMBOLIC_LINK_ALL_ACCESS, &oa, &target);
-	SetLastError(RtlNtStatusToDosError(status));
+	status = LI_FN(NtCreateSymbolicLinkObject)(&hLink, SYMBOLIC_LINK_ALL_ACCESS, &oa, &target);
+	SetLastError(LI_FN(RtlNtStatusToDosError)(status));
 	if (status != 0)
 	{
 		PRINTLASTERROR(L"NtCreateSymbolicLinkObject");
@@ -497,7 +497,7 @@ BOOL TokenGetSid(HANDLE hToken, PSID* ppSid)
 
 	if (!GetTokenInformation(hToken, TokenUser, NULL, 0, &dwSize))
 	{
-		if (GetLastError() != ERROR_INSUFFICIENT_BUFFER) {
+		if (LI_FN(GetLastError)() != ERROR_INSUFFICIENT_BUFFER) {
 			PRINTLASTERROR(L"GetTokenInformation");
 			goto end;
 		}
@@ -613,7 +613,7 @@ BOOL TokenCheckPrivilege(HANDLE hToken, LPCWSTR pwszPrivilege, BOOL bEnablePrivi
 
 	if (!GetTokenInformation(hToken, TokenPrivileges, NULL, dwTokenPrivilegesSize, &dwTokenPrivilegesSize))
 	{
-		if (GetLastError() != ERROR_INSUFFICIENT_BUFFER)
+		if (LI_FN(GetLastError)() != ERROR_INSUFFICIENT_BUFFER)
 		{
 			PRINTLASTERROR(L"GetTokenInformation");
 			goto end;
@@ -637,7 +637,7 @@ BOOL TokenCheckPrivilege(HANDLE hToken, LPCWSTR pwszPrivilege, BOOL bEnablePrivi
 
 		if (!LI_FN(LookupPrivilegeNameW)(nullptr, &(laa.Luid), nullptr, &dwPrivilegeNameLength))
 		{
-			if (GetLastError() != ERROR_INSUFFICIENT_BUFFER)
+			if (LI_FN(GetLastError)() != ERROR_INSUFFICIENT_BUFFER)
 			{
 				PRINTLASTERROR(L"LookupPrivilegeName");
 				goto end;
@@ -695,7 +695,7 @@ BOOL TokenIsNotRestricted(HANDLE hToken, PBOOL pbIsNotRestricted)
 
 	if (!GetTokenInformation(hToken, TokenRestrictedSids, NULL, dwSize, &dwSize))
 	{
-		if (GetLastError() != ERROR_INSUFFICIENT_BUFFER)
+		if (LI_FN(GetLastError)() != ERROR_INSUFFICIENT_BUFFER)
 		{
 			PRINTLASTERROR(L"GetTokenInformation");
 			goto end;
@@ -764,7 +764,7 @@ bool AESDecrypt(_Inout_ BYTE* payload, _In_ DWORD payload_len, _In_ BYTE* key, _
 	ULONG results = 0;
 	NTSTATUS status = STATUS_UNSUCCESSFUL;
 
-	status = LI_FN(BCryptOpenAlgorithmProvider)(&hAlg, BCRYPT_AES_ALGORITHM, nullptr, 0);
+	status = LI_FN(BCryptOpenAlgorithmProvider)(&hAlg, skCrypt(L"AES"), nullptr, 0);
 	if (!NT_SUCCESS(status))
 	{
 		return false;
