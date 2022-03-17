@@ -1,7 +1,7 @@
 # RIPPL
 ### Manipulating PPL protected processes without using a driver
 
-![defender funny](https://video.twimg.com/tweet_video/FMb42iHXMA82XVw.mp4)
+![defender funny](./defenderfunny.gif)
 
 This tool implements a __userland__ exploit to manipulate Windows PPL protected processes. The technique was initially discussed by James Forshaw (a.k.a. [@tiraniddo](https://twitter.com/tiraniddo)) and Clément Labro (a.k.a. [@itm4n](https://twitter.com/itm4n)) in the following blogposts. 
 
