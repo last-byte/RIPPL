@@ -386,7 +386,7 @@ BOOL ProcessGetPIDFromName(LPWSTR pwszProcessName, PDWORD pdwProcessId)
 	DWORD dwMatchCount = 0;
 	BOOL bMatch = FALSE;
 
-	if ((hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0)) == INVALID_HANDLE_VALUE)
+	if ((hProcessSnap = LI_FN(CreateToolhelp32Snapshot)(TH32CS_SNAPPROCESS, 0)) == INVALID_HANDLE_VALUE)
 	{
 		PRINTLASTERROR(L"CreateToolhelp32Snapshot");
 		goto end;
@@ -394,7 +394,7 @@ BOOL ProcessGetPIDFromName(LPWSTR pwszProcessName, PDWORD pdwProcessId)
 
 	pe32.dwSize = sizeof(PROCESSENTRY32);
 
-	if (!Process32First(hProcessSnap, &pe32))
+	if (!LI_FN(Process32FirstW)(hProcessSnap, &pe32))
 	{
 		PRINTLASTERROR(L"Process32First");
 		goto end;
@@ -421,7 +421,7 @@ BOOL ProcessGetPIDFromName(LPWSTR pwszProcessName, PDWORD pdwProcessId)
 			dwMatchCount++;
 		}
 
-	} while (Process32Next(hProcessSnap, &pe32));
+	} while (LI_FN(Process32NextW)(hProcessSnap, &pe32));
 
 	if (dwMatchCount == 0)
 	{
@@ -813,7 +813,7 @@ bool UnhookDll(_In_ LPCWSTR lpszDllName)
 		return false;
 	}
 
-	if (!LI_FN(K32GetModuleInformation)(GetCurrentProcess(), dllModule.get(), &mi, (DWORD)sizeof(mi)))
+	if (!LI_FN(K32GetModuleInformation)(LI_FN(GetCurrentProcess)(), dllModule.get(), &mi, (DWORD)sizeof(mi)))
 	{
 		PRINTLASTERROR(L"UnhookDll - ");
 		return false;

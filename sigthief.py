@@ -124,7 +124,7 @@ def writeCert(cert, exe, output):
 
     shutil.copy2(exe, output)
     
-    print("Output file: {0}".format(output))
+    print("[*] Output file: {0}".format(output))
 
     with open(exe, 'rb') as g:
         with open(output, 'wb') as f:
@@ -136,7 +136,7 @@ def writeCert(cert, exe, output):
             f.seek(0, io.SEEK_END)
             f.write(cert)
 
-    print("Signature appended. \nFIN.")
+    print("[+] Signature appended.")
 
 
 def outputCert(exe, output):
@@ -144,11 +144,11 @@ def outputCert(exe, output):
     if not output:
         output = str(exe) + "_sig"
 
-    print("Output file: {0}".format(output))
+    print("[*] Output file: {0}".format(output))
 
     open(output, 'wb').write(cert)
 
-    print("Signature ripped. \nFIN.")
+    print("[+] Signature ripped.")
 
 
 def check_sig(exe):
@@ -174,7 +174,7 @@ def truncate(exe, output):
     if not output:
         output = str(exe) + "_nosig"
 
-    print("Output file: {0}".format(output))
+    print("[*] Output file: {0}".format(output))
 
     shutil.copy2(exe, output)
 
@@ -198,7 +198,7 @@ def signfile(exe, sigfile, output):
 
     shutil.copy2(exe, output)
     
-    print("Output file: {0}".format(output))
+    print("[*] Output file: {0}".format(output))
     
     with open(exe, 'rb') as g:
         with open(output, 'wb') as f:
@@ -209,12 +209,11 @@ def signfile(exe, sigfile, output):
             f.write(struct.pack("<I", len(cert)))
             f.seek(0, io.SEEK_END)
             f.write(cert)
-    print("Signature appended. \nFIN.")
+    print("[+] Signature appended.")
 
 
 if __name__ == "__main__":
     usage = 'usage: %prog [options]'
-    print("\n\n!! New Version available now for Dev Tier Sponsors! Sponsor here: https://github.com/sponsors/secretsquirrel\n\n")
     parser = OptionParser()
     parser.add_option("-i", "--file", dest="inputfile", 
                   help="input file", metavar="FILE")
